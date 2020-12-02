@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-GameObject::GameObject(char* filePath, Vector3D initialPosition, ID3D11Device* device)
+GameObject::GameObject(char* filePath, Vector3D initialPosition, ID3D11Device* device, ID3D11ShaderResourceView* texture): _pTextureRV(texture)
 {
 	_ObjectModel = OBJLoader::Load(filePath, device);
 
@@ -30,6 +30,11 @@ MeshData GameObject::GetMesh()
 	return _ObjectModel;
 }
 
+ID3D11ShaderResourceView* GameObject::GetTexture()
+{
+	return _pTextureRV;
+}
+
 XMFLOAT4X4 GameObject::GetObjectWorldMatrix()
 {
 	return _OWorld;
@@ -42,10 +47,10 @@ void GameObject::SetPosition(Vector3D newPos)
 
 void GameObject::Draw(ID3D11DeviceContext* _pImmediateContext)
 {
-	UINT stride = _ObjectModel.VBStride;
-	UINT offset = _ObjectModel.VBOffset;
+
+
 	//Get reference to buffer
-	_pImmediateContext->IASetVertexBuffers(0, 1, &_ObjectModel.VertexBuffer, &stride, &offset);
+	_pImmediateContext->IASetVertexBuffers(0, 1, &_ObjectModel.VertexBuffer, &_ObjectModel.VBStride, &_ObjectModel.VBOffset);
 	// Set index buffer
 	_pImmediateContext->IASetIndexBuffer(_ObjectModel.IndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 

@@ -13,6 +13,7 @@
 #include "OBJLoader.h"
 #include "Camera.h"
 #include "GameObject.h"
+#include "Commons.h"
 
 //using namespace DirectX;
 
@@ -32,7 +33,7 @@ private:
 	ID3D11VertexShader*     _pVertexShader;
 	ID3D11PixelShader*      _pPixelShader;
 	ID3D11InputLayout*      _pVertexLayout;
-	ID3D11Buffer*           _pVertexBuffer;
+ 	ID3D11Buffer*           _pVertexBuffer;
 	ID3D11Buffer*           _pIndexBuffer;
 	ID3D11Buffer*			_pPlaneVertexBuffer;
 	ID3D11Buffer*			_pPlaneIndexBuffer;
@@ -60,7 +61,10 @@ private:
 	XMFLOAT4 specularLight;
 	XMFLOAT3 eyePosW;
 	float specularPower;
+
+
 	ID3D11ShaderResourceView* _pTextureRV = nullptr;
+	ID3D11ShaderResourceView* _pDefaultTextureRV = nullptr;
 	ID3D11SamplerState* _pSamplerLinear = nullptr;
 
 
@@ -125,7 +129,7 @@ private:
 	static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	LRESULT MsgHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	void InitCamera(Vector3D initPos, Vector3D lootAt, Vector3D up);
-	void InitGameObject(Vector3D initPos,char* modelPath);
+	void InitGameObject(Vector3D initPos,char* modelPath, ID3D11ShaderResourceView* texture);
 	void DrawGameObjects(ID3D11DeviceContext* deviceContext, ConstantBuffer cb);
 	void CleanUpCameras();
 	void UpdateGameObjects(float time);

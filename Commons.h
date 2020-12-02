@@ -5,8 +5,12 @@
 #ifndef _COMMONS_H
 #define _COMMONS_H
 
-// Create index buffer
-WORD CubeIndices[] =
+//Defaults
+static const wchar_t* defaultTexturePath = L"Assets/Textures/Crate_COLOR.dds";
+
+
+//// Create index buffer
+static WORD CubeIndices[] =
 {
 	//Front facising square
 	0,1,2, //First triangle
@@ -32,7 +36,7 @@ WORD CubeIndices[] =
 
 };
 
-Vertex3D CubeVertices3D[] =
+static Vertex3D CubeVertices3D[] =
 {
 	{Vector3D(-0.5f, 0.5f, 0.5f), DirectX::XMFLOAT2(0.0f,0.0f)},
 	{Vector3D(0.5f, 0.5f, 0.5f),DirectX::XMFLOAT2(1.0f,0.0f)},
@@ -44,7 +48,7 @@ Vertex3D CubeVertices3D[] =
 	{Vector3D(-0.5f,0.5f, -0.5f),DirectX::XMFLOAT2(0.0f,0.0f)}
 };
 
-WORD PlaneIndicies[] =
+static WORD PlaneIndicies[] =
 {
 	// row	1
 			//one square

@@ -36,7 +36,7 @@ void OBJLoader::CreateIndices(const std::vector<XMFLOAT3>& inVertices,
 		Vertex vertex = {inVertices[i], inNormals[i],  inTexCoords[i]};
 
 		unsigned short index;
-		// See if a vertex already exists in the buffer that has the same attributes as this one
+		// See if a vertex already exists in the buffer that has the same attributes as this onedd
 		bool found = FindSimilarVertex(vertex, vertToIndexMap, index); 
 		
 		if(found) //if found, re-use it's index for the index buffer
@@ -210,7 +210,7 @@ MeshData OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 			D3D11_BUFFER_DESC bd;
 			ZeroMemory(&bd, sizeof(bd));
 			bd.Usage = D3D11_USAGE_DEFAULT;
-			bd.ByteWidth = sizeof(SimpleVertex) * meshVertices.size();
+			bd.ByteWidth = sizeof(Vertex) * meshVertices.size();
 			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 			bd.CPUAccessFlags = 0;
 
@@ -222,7 +222,7 @@ MeshData OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 
 			meshData.VertexBuffer = vertexBuffer;
 			meshData.VBOffset = 0;
-			meshData.VBStride = sizeof(SimpleVertex);
+			meshData.VBStride = sizeof(Vertex);
 
 			unsigned short* indicesArray = new unsigned short[meshIndices.size()];
 			unsigned int numMeshIndices = meshIndices.size();
@@ -235,7 +235,7 @@ MeshData OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 			std::ofstream outbin(binaryFilename.c_str(), std::ios::out | std::ios::binary);
 			outbin.write((char*)&numMeshVertices, sizeof(unsigned int));
 			outbin.write((char*)&numMeshIndices, sizeof(unsigned int));
-			outbin.write((char*)finalVerts, sizeof(SimpleVertex) * numMeshVertices);
+			outbin.write((char*)finalVerts, sizeof(Vertex) * numMeshVertices);
 			outbin.write((char*)indicesArray, sizeof(unsigned short) * numMeshIndices);
 			outbin.close();
 
@@ -272,9 +272,9 @@ MeshData OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 		binaryInFile.read((char*)&numIndices, sizeof(unsigned int));
 		
 		//Read in data from binary file
-		SimpleVertex* finalVerts = new SimpleVertex[numVertices];
+		Vertex* finalVerts = new Vertex[numVertices];
 		unsigned short* indices = new unsigned short[numIndices];
-		binaryInFile.read((char*)finalVerts, sizeof(SimpleVertex) * numVertices);
+		binaryInFile.read((char*)finalVerts, sizeof(Vertex) * numVertices);
 		binaryInFile.read((char*)indices, sizeof(unsigned short) * numIndices);
 
 		//Put data into vertex and index buffers, then pass the relevant data to the MeshData object.
@@ -284,7 +284,7 @@ MeshData OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 		D3D11_BUFFER_DESC bd;
 		ZeroMemory(&bd, sizeof(bd));
 		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(SimpleVertex) * numVertices;
+		bd.ByteWidth = sizeof(Vertex) * numVertices;
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		bd.CPUAccessFlags = 0;
 

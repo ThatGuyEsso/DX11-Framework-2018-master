@@ -142,19 +142,8 @@ HRESULT Application::InitVertexBuffer()
 {
 	HRESULT hr;
 	
-    // Create vertex buffer
-    Vertex3D vertices3D[] =
-    {
-		{Vector3D(-0.5f, 0.5f, 0.5f), XMFLOAT2(0.0f,0.0f)},
-		{Vector3D(0.5f, 0.5f, 0.5f), XMFLOAT2(1.0f,0.0f)},
-		{Vector3D(-0.5f, -0.5f, 0.5f), XMFLOAT2(0.0f,1.0f)},
-		{Vector3D(0.5f,-0.5f, 0.5f), XMFLOAT2(1.0f,1.0f)},
-		{Vector3D(0.5f,0.5f, -0.5f), XMFLOAT2(1.0f,0.0f)},
-		{Vector3D(0.5f,-0.5f, -0.5f),XMFLOAT2(1.0f,1.0f)},
-		{Vector3D(-0.5f,-0.5f, -0.5f),XMFLOAT2(0.0f,1.0f)},
-		{Vector3D(-0.5f,0.5f, -0.5f),XMFLOAT2(0.0f,0.0f)}
-    };
-	CreateD11Vertex(vertices3D, 8);
+
+	CreateD11Vertex(CubeVertices3D, 8);
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
@@ -254,32 +243,7 @@ HRESULT Application::InitIndexBuffer()
 	HRESULT hr;
 
     // Create index buffer
-    WORD indices[] =
-    {
-		//Front facising square
-        0,1,2, //First triangle
-        1,3,2, //Second Triangle 
-		//Right facing square
-		1,4,3, // third triangle
-		4,5,3, //fourth triangle#
-
-		//Left facing square
-		2,7,0, // 5th triangle
-		2,6,7, //6th triangle#
-		//Back facing square
-		6,5,4, //7th triangle
-		6,4,7, //8th triangle
-
-		//Ceiling square
-		7,4,0, //9th triangle
-		4,1,0, //10thh triangle
-		
-		//Floor square
-		2,3,5,//11th triangle
-		5,6,2, //12thh triangle
-
-    };
-
+ 
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 
@@ -290,7 +254,7 @@ HRESULT Application::InitIndexBuffer()
 
 	D3D11_SUBRESOURCE_DATA InitData;
 	ZeroMemory(&InitData, sizeof(InitData));
-    InitData.pSysMem = indices;
+    InitData.pSysMem = CubeIndices;
     hr = _pd3dDevice->CreateBuffer(&bd, &InitData, &_pIndexBuffer);
 
 
@@ -319,65 +283,7 @@ HRESULT Application::InitIndexBuffer()
 	init.pSysMem = pyramindIndices;
 	hr = _pd3dDevice->CreateBuffer(&pyibd, &init, &_pPyramidIndexBuffer);
 
-	// Create index buffer
-	WORD planeBuffer[] =
-	{	// row	1
-		//one square
-		0,1,6, //0
-		6,5,0, //1
-		//two square
-		1,2,7, //2
-		7,6,1, //3
-		// 3rd square
-		2,3,8,//4
-		8,7,2,//5
-		//4th square
-		3,4,9,//6
-		9,8,3,//7
-
-
-		// row 2
-		5,6,11,//8
-		11,10,5,//9
-		
-		6,7,12,//10
-		12,11,6,//11
-
-		7,8,13,//12
-		13,12,7,//13
-
-		8,9,14,//14
-		14,13,8,//15
-
-		// row 3
-		10,11,16,//16
-		16,15,10,//17
-
-		11,12,17,//18
-		17,16,11,//19
-
-		12,13,18,//20
-		18,17,12,//21
-		
-		13,14,19,//22
-		19,18,13,//23
-
-		// row 4
-		15,16,21,//24
-		21,20,15,//25
-
-
-		16,17,22,//26
-		22,21,16,//27
-
-		17,18,23,//28
-		23,22,17,//29
-
-		18,19,24,//30
-		24,23,18//31
-
-	};
-
+	
 	D3D11_BUFFER_DESC pibd;
 	ZeroMemory(&pibd, sizeof(pibd));
 
@@ -388,9 +294,8 @@ HRESULT Application::InitIndexBuffer()
 
 	D3D11_SUBRESOURCE_DATA initPlane;
 	ZeroMemory(&initPlane, sizeof(initPlane));
-	initPlane.pSysMem = planeBuffer;
+	initPlane.pSysMem = PlaneIndicies;
 	hr = _pd3dDevice->CreateBuffer(&pibd, &initPlane, &_pPlaneIndexBuffer);
-
 
     if (FAILED(hr))
         return hr;
@@ -574,9 +479,10 @@ HRESULT Application::InitDevice()
 	InitVertexBuffer();
 
 	InitIndexBuffer();
+	
 	//donutMeshData =OBJLoader::Load("Models/donut.obj",_pd3dDevice);
-	InitGameObject(Vector3D(1.0f,1.0f,1.0f), "Models/donut.obj");
-	CreateDDSTextureFromFile(_pd3dDevice, L"Assets/Textures/Crate_COLOR.dds", nullptr, &_pTextureRV);
+	CreateDDSTextureFromFile(_pd3dDevice, defaultTexturePath, nullptr, &_pDefaultTextureRV);
+	InitGameObject(Vector3D(), "Models/donut.obj", _pDefaultTextureRV);
     // Set primitive topology
     _pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -731,6 +637,9 @@ void Application::Draw()
 	cb.SpecularPower = specularPower;
 	cb.EyePosW = eyePosW;
 
+	//Use default texture as it is set on a per object basis
+
+	_pTextureRV = _pDefaultTextureRV;
 	_pImmediateContext->PSSetShaderResources(0, 1, &_pTextureRV);
 	_pImmediateContext->UpdateSubresource(_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 
@@ -748,7 +657,6 @@ void Application::Draw()
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 	
-	DrawGameObjects(_pImmediateContext,cb);
 
 	//Draw cubes
 	_pImmediateContext->IASetVertexBuffers(0, 1, &_pVertexBuffer, &stride, &offset);
@@ -756,6 +664,7 @@ void Application::Draw()
 	_pImmediateContext->IASetIndexBuffer(_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 
 	DrawAstroids(cb);
+	DrawGameObjects(_pImmediateContext,cb);
 
 
     _pSwapChain->Present(0, 0);
@@ -950,10 +859,10 @@ void Application::InitCamera(Vector3D initPos, Vector3D lootAt, Vector3D up)
 	//Add to vector of camera;
 	cameras.push_back(newCam);
 }
-void Application::InitGameObject(Vector3D initPos, char* modelPath)
+void Application::InitGameObject(Vector3D initPos, char* modelPath, ID3D11ShaderResourceView* texture)
 {
 	if (_pd3dDevice != NULL) {
-		GameObject* newGameObject = new GameObject(modelPath, initPos, _pd3dDevice);
+		GameObject* newGameObject = new GameObject(modelPath, initPos, _pd3dDevice, texture);
 		_gameObjects.push_back(newGameObject);
 	}
 }
@@ -963,6 +872,8 @@ void Application::DrawGameObjects(ID3D11DeviceContext* deviceContext, ConstantBu
 
 		for (GameObject*  object : _gameObjects) {
 	
+			_pTextureRV = object->GetTexture();
+			_pImmediateContext->PSSetShaderResources(0, 1, &_pTextureRV);
 			cb.mWorld = XMMatrixTranspose(XMLoadFloat4x4(&object->GetObjectWorldMatrix()));
 			_pImmediateContext->UpdateSubresource(_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 			object->Draw(deviceContext);
