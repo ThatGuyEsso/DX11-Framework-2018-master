@@ -379,6 +379,7 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DX11 Framework.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectPrimitives.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="OBJLoader.cpp" />
@@ -393,6 +394,7 @@
     <ClInclude Include="Commons.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectPrimitives.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LightHelper.h" />
     <ClInclude Include="Matrix.h" />
