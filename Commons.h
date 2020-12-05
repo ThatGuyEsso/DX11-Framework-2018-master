@@ -8,31 +8,33 @@
 //Defaults
 static const wchar_t* defaultTexturePath = L"Assets/Textures/Crate_COLOR.dds";
 
-
+static UINT CubeIndexCount = 36;
+static UINT CubeVertexCount =8;
+static UINT PlaneIndexCount = 96;
+static UINT PlaneVertexCount = 25;
+static UINT PyramidIndexCount= 24;
+static UINT PyramidVertexCount= 5;
 //// Create index buffer
 static WORD CubeIndices[] =
 {
-	//Front facising square
-	0,1,2, //First triangle
-	1,3,2, //Second Triangle 
-	//Right facing square
-	1,4,3, // third triangle
-	4,5,3, //fourth triangle#
+	0,2,3,
+	3,1,0,
 
-	//Left facing square
-	2,7,0, // 5th triangle
-	2,6,7, //6th triangle#
-	//Back facing square
-	6,5,4, //7th triangle
-	6,4,7, //8th triangle
+	5,4,1,
+	1,3,5,
 
-	//Ceiling square
-	7,4,0, //9th triangle
-	4,1,0, //10thh triangle
+	2,0,7,
+	7,6,2,
 
-	//Floor square
-	2,3,5,//11th triangle
-	5,6,2, //12thh triangle
+	3,2,6,
+	6,5,3,
+
+	4,5,6,
+	6,7,4,
+
+	7,0,1,
+	1,4,7
+
 
 };
 

@@ -12,8 +12,8 @@
 #include "Structs.h"
 #include "OBJLoader.h"
 #include "Camera.h"
-#include "GameObject.h"
 #include "Commons.h"
+#include "GameObjectPrimitives.h"
 
 //using namespace DirectX;
 
@@ -41,7 +41,7 @@ private:
 	ID3D11Buffer*			_pPyramidIndexBuffer;
 	ID3D11Buffer*           _pConstantBuffer;
 	XMFLOAT4X4              _world,_worldPlane;
-	std::vector<XMFLOAT4X4> _worldMatrices;
+	std::vector<GameObjectPrimitives*> _astroids;
 	std::vector<float>		_astroidScales;
 	std::vector<float>		_astroidOffset;
 	std::vector<float>		_astroidRotationSpeedScalar;
@@ -73,11 +73,11 @@ private:
 private:
 	HRESULT InitWindow(HINSTANCE hInstance, int nCmdShow);
 	HRESULT InitDevice();
-	void Cleanup();
 	HRESULT CompileShaderFromFile(WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut);
 	HRESULT InitShadersAndInputLayout();
 	HRESULT InitVertexBuffer();
 	HRESULT InitIndexBuffer();
+	void Cleanup();
 
 	UINT _WindowHeight;
 	UINT _WindowWidth;
@@ -88,7 +88,7 @@ private:
 private:
 	int minNumOfAstroids =100;
 	int maxNumOfAstroids = 250;
-	float objectMoveSpeed =1.0f;
+	float objectMoveSpeed =0.5f;
 	MeshData testData;
 	float _NearDepth = 0.01f, _FarDepth = 100.0f;
 	bool isWireFrameModeOn = false;
@@ -113,7 +113,8 @@ public:
 	void OrbitCameraY(bool orbitRight);
 	void OrbitCameraX(bool orbitUP);
 	void ChangeCameraMode();
-
+	void SetActiveCameraTargetGameObject();
+	
 	void MoveObjectForward();
 public:
 
@@ -124,13 +125,14 @@ private:
 	GameObject* GetSelectedObject();
 	void SetNumberOfAStroid();
 	void ScaleAndOffsetAstroids(float time);
-	void DrawAstroids(ConstantBuffer cb);
+	void DrawAstroids(ConstantBuffer cb, ID3D11DeviceContext* deviceContext);
 	void CreateD11Vertex(Vertex3D arr[], int arrLength);
 	static LRESULT CALLBACK MsgSetUp(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	LRESULT MsgHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	void InitCamera(Vector3D initPos, Vector3D lootAt, Vector3D up);
 	void InitGameObject(Vector3D initPos,char* modelPath, ID3D11ShaderResourceView* texture);
+	void InitPrimitiveGameObject(GameObjectPrimitives::PrimitiveType objectType,Vector3D initPos, ID3D11ShaderResourceView* texture);
 	void DrawGameObjects(ID3D11DeviceContext* deviceContext, ConstantBuffer cb);
 	void CleanUpCameras();
 	void UpdateGameObjects(float time);

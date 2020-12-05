@@ -15,6 +15,10 @@ Camera::Camera(Vector3D position, Vector3D at, Vector3D up, float windowWidth, f
 
 
 }
+Camera::~Camera()
+{
+	CleanUp();
+}
 //============Updaters=================
 void Camera::Update(float deltaTime)
 {	
@@ -27,10 +31,15 @@ void Camera::Update(float deltaTime)
 	DirectX::XMVECTOR forward = DirectX::XMVectorSet(_forward.show_X(), _forward.show_Y(), _forward.show_Z(), 0.0f);
 	//store new view matrix
 
+	//Update transfomation matrix depending on the camera is looking at or to
 	if (_isLookingForward) {
 		XMStoreFloat4x4(&tempView, DirectX::XMMatrixLookToLH(Eye, forward, Up));
 	}
 	else {
+
+		if (_isFollowCam) {
+			UpdateTargetLookAt();
+		}
 		XMStoreFloat4x4(&tempView, DirectX::XMMatrixLookAtLH(Eye, At, Up));
 	}
 	
@@ -125,6 +134,20 @@ Vector3D Camera::CreateRotation(float angle,Vector3D rotAxis)
 
 	return Vector3D(temp.x, temp.y, temp.z);
 
+}
+
+void Camera::UpdateTargetLookAt()
+{
+	if (targetGameObject != nullptr) {
+		_at = targetGameObject->GetPosition();
+	}
+	
+}
+
+void Camera::CleanUp()
+{
+	delete targetGameObject;
+	targetGameObject = nullptr;
 }
 
 Matrix<float> Camera::GetView()
@@ -307,6 +330,18 @@ void Camera::MoveOnY(bool up)
 
 	}
 }
+
+void Camera::SetLookAtGameObject(GameObject* target)
+{
+	targetGameObject = target;
+}
+
+void Camera::ToggleFollow(bool isFollowing)
+{
+	_isFollowCam = isFollowing;
+}
+
+
 
 
 //====================================

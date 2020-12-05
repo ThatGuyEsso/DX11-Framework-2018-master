@@ -306,6 +306,7 @@ HRESULT Application::InitIndexBuffer()
 	CreateDDSTextureFromFile(_pd3dDevice, defaultTexturePath, nullptr, &_pDefaultTextureRV);
 	InitGameObject(Vector3D(), "Models/cylinder.obj", _pDefaultTextureRV);
 	InitGameObject(Vector3D(0.f,2.0f,0.0f), "Models/cube.obj", _pDefaultTextureRV);
+	InitPrimitiveGameObject(GameObjectPrimitives::PrimitiveType::Cube,Vector3D(0.f, -2.0f, 0.0f), _pDefaultTextureRV);
 
 	UINT tstCount = testData.IndexCount;
     if (FAILED(hr))
@@ -667,11 +668,7 @@ void Application::Draw()
 	
 	DrawGameObjects(_pImmediateContext,cb);
 
-	_pImmediateContext->IASetVertexBuffers(0, 1, &_pVertexBuffer, &stride, &offset);
-	_pImmediateContext->IASetIndexBuffer(_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
-	//Draw cubes
-
-	DrawAstroids(cb);
+	DrawAstroids(cb, _pImmediateContext);
 
 
     _pSwapChain->Present(0, 0);
@@ -714,6 +711,13 @@ void Application::ChangeCameraMode()
 	GetActiveCamera()->ToggleCameraMode();
 }
 
+void Application::SetActiveCameraTargetGameObject()
+{
+	if (!GetActiveCamera()->GetLookIsLookingForward()) {
+		GetActiveCamera()->SetLookAtGameObject(GetSelectedObject());
+	}
+}
+
 void Application::MoveObjectForward()
 {
 	MoveActiveGameObject(Vector3D(0.0f, 0.0f, 1.0f));
@@ -736,10 +740,12 @@ void Application::SetNumberOfAStroid()
 	int random = rand() % maxNumOfAstroids + minNumOfAstroids;
 	
 	for (int k = 0; k < random; k++) {
-		XMFLOAT4X4 fill;
-		_worldMatrices.push_back(fill);
+
+		GameObjectPrimitives* newAstroid = new GameObjectPrimitives(GameObjectPrimitives::PrimitiveType::Cube,
+			Vector3D(), _pd3dDevice, _pDefaultTextureRV );
+		_astroids.push_back(newAstroid);
 	}
-	for (int i = 0; i < _worldMatrices.size(); i++) {
+	for (int i = 0; i < _astroids.size(); i++) {
 
 		float x = float(rand() % 100) * 0.1f;
 		if (x == 0.0f) {
@@ -770,31 +776,27 @@ void Application::ScaleAndOffsetAstroids(float time)
 	float t = time;
 
 
-	for (int i = 0; i < _worldMatrices.size(); i++) {
-		XMStoreFloat4x4(&_worldMatrices[i], XMMatrixScaling(_astroidScales[i], _astroidScales[i], _astroidScales[i])* 
-			XMMatrixRotationZ(-(t* _astroidRotationSpeedScalar[i]))*
-			XMMatrixTranslation(_astroidOffset[i]*1.25f, _astroidOffset[i] * 1.25f, 0.0f)* XMMatrixRotationZ(t* _astroidRotationSpeedScalar[i]*0.2));
+	for (int i = 0; i < _astroids.size(); i++) {
+
+		_astroids[i]->SetPosition(Vector3D(_astroidOffset[i] * 1.25f, _astroidOffset[i] * 1.25f, 0.0f));
+		_astroids[i]->SetLocalScale(Vector3D(_astroidScales[i], _astroidScales[i], _astroidScales[i]));
+		_astroids[i]->SetRotation(Vector3D(0.0f,0.0f, -t ));
+		_astroids[i]->SetOrbitSpeed(t*_astroidRotationSpeedScalar[i]/2.0f);
+		_astroids[i]->Update(t);
 	}
 
 	
 }
 
-void Application::DrawAstroids(ConstantBuffer cb)
+void Application::DrawAstroids(ConstantBuffer cb, ID3D11DeviceContext* deviceContext)
 {
 	
-	std::vector< XMMATRIX> worldMatrices;
-	for (int i = 0; i < _worldMatrices.size(); i++) {
-		worldMatrices.push_back(XMLoadFloat4x4(&_worldMatrices[i]));
-	}
-
-	for (int i = 0; i < _worldMatrices.size(); i++) {
-		cb.mWorld = XMMatrixTranspose(worldMatrices[i]);
-
-	
-		// Set index buffer
-	
+	for (GameObjectPrimitives* astroid : _astroids) {
+		_pTextureRV = astroid->GetTexture();
+		_pImmediateContext->PSSetShaderResources(0, 1, &_pTextureRV);
+		cb.mWorld = XMMatrixTranspose(XMLoadFloat4x4(&astroid->GetObjectWorldMatrix()));
 		_pImmediateContext->UpdateSubresource(_pConstantBuffer, 0, nullptr, &cb, 0, 0);
-		_pImmediateContext->DrawIndexed(36, 0, 0);
+		astroid->Draw(deviceContext);
 	}
 }
 
@@ -885,6 +887,13 @@ void Application::InitGameObject(Vector3D initPos, char* modelPath, ID3D11Shader
 		_gameObjects.push_back(newGameObject);
 	}
 }
+void Application::InitPrimitiveGameObject(GameObjectPrimitives::PrimitiveType objectType, Vector3D initPos, ID3D11ShaderResourceView* texture)
+{
+	if (_pd3dDevice != NULL) {
+		GameObjectPrimitives* newGameObject = new GameObjectPrimitives(objectType, initPos, _pd3dDevice, texture);
+		_gameObjects.push_back(newGameObject);
+	}
+}
 void Application::DrawGameObjects(ID3D11DeviceContext* deviceContext, ConstantBuffer cb)
 {
 	if (!_gameObjects.empty()) {
@@ -917,7 +926,7 @@ void Application::CleanUpCameras()
 void Application::CleanUpGameObjects()
 {
 	for each (GameObject * objects in _gameObjects) {
-		delete objects;
+
 		objects = nullptr;
 	}
 	_gameObjects.clear();

@@ -15,6 +15,7 @@ struct MeshData
 	UINT VBStride;
 	UINT VBOffset;
 	UINT IndexCount;
+
 };
 
 

@@ -78,6 +78,9 @@ int CALLBACK wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 				theApp->CycleBetweenGameObjects();
 			}
 
+			if (theApp->_input->GetKey(0x58)) {
+				theApp->SetActiveCameraTargetGameObject();
+			}
 		}
 	
 		theApp->Update();

@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include <directxmath.h>
+#include "GameObject.h"
 //typedef const DirectX::XMVECTOR FXMVECTOR;
 
 //using namespace DirectX;
@@ -15,9 +16,10 @@ private:
 	Vector3D _up; //Up vector
 	Vector3D _forward; //forward vector
 	Vector3D _right;
+	GameObject* targetGameObject = nullptr;
 	bool _isLookingForward;
 	bool _hasControl = true;
-
+	bool _isFollowCam = true;
 	//Camera settings
 	float _windowWidth;
 	float _windowHeight;
@@ -40,14 +42,15 @@ private:
 	Matrix<float> _projection = Matrix<float>(4, 4, 0.0f);
 private:
 	Vector3D CreateRotation(float angle,Vector3D rotAxis);
-
+	void UpdateTargetLookAt();
+	void CleanUp();
 public:
 	//Constructor and destructor for the camera
 
 	Camera(Vector3D position, Vector3D at, Vector3D up, float
 		windowWidth, float windowHeight, float
 		nearDepth, float farDepth);
-	~Camera()=default;
+	~Camera();
 
 	// update function to make the current view and projection 
 // matrices
@@ -59,6 +62,7 @@ public:
 	Vector3D GetForward();
 	bool GetMovingForward();
 	void SetPosition(Vector3D newPosition);
+	bool GetLookIsLookingForward() { return _isLookingForward; }
 	void SetLookAt(Vector3D newPoint);
 	void SetUp(Vector3D newUp);
 	void SetForward(Vector3D newForward);
@@ -73,6 +77,8 @@ public:
 	void Strafe(bool strafeRight);
 	void Move(bool moveForward);
 	void MoveOnY(bool up);
+	void SetLookAtGameObject(GameObject* target);
+	void ToggleFollow(bool isFollowing);
 
 
 

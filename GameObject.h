@@ -6,11 +6,12 @@
 
 
 class GameObject {
-private:
+protected:
 	MeshData _ObjectModel;
 	Vector3D _Position;
 	Vector3D _Scale;
 	Vector3D _Rotation;
+	float _orbitSpeed;
 	Material _material;
 	ID3D11ShaderResourceView* _pTextureRV = nullptr;
 
@@ -27,6 +28,11 @@ public:
 	MeshData GetMesh();
 	ID3D11ShaderResourceView* GetTexture(); 
 	XMFLOAT4X4 GetObjectWorldMatrix();
+	void SetOrbitSpeed(float newSpeed);
 	void SetPosition(Vector3D newPos);
-private:
+
+	void SetRotation(Vector3D newRot);
+
+	void SetLocalScale(Vector3D newScale);
+
 };
