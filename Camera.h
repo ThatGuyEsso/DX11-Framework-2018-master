@@ -73,7 +73,7 @@ public:
 	void Strafe(bool strafeRight);
 	void Move(bool moveForward);
 	void MoveOnY(bool up);
-	void Roll (bool rollRight);
+
 
 
 

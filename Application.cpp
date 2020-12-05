@@ -21,6 +21,7 @@ Application::Application()
 	InitCamera(Vector3D(0.0f, 0.0f, -5.0f), Vector3D(), Vector3D(0.0f, 1.0f, 0.0f));
 	InitCamera(Vector3D(5.0f, 4.0f, -2.0f), Vector3D(), Vector3D(0.0f, 1.0f, 0.0f));
 	InitCamera(Vector3D(5.0f, -10.0f, 5.0f), Vector3D(), Vector3D(0.0f, 1.0f, 0.0f));
+
 }
 
 Application::~Application()
@@ -50,6 +51,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	// Initialize the world matrix
 	XMStoreFloat4x4(&_world, XMMatrixIdentity());
 	SetNumberOfAStroid();
+
     // Initialize the view matrix
 
 
@@ -66,7 +68,9 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 
 	_pd3dDevice->CreateSamplerState(&sampDesc, &_pSamplerLinear);
 	_pImmediateContext->PSSetSamplers(0, 1, &_pSamplerLinear);
+
 	return S_OK;
+
 }
 
 
@@ -232,6 +236,7 @@ HRESULT Application::InitVertexBuffer()
 	initPlane.pSysMem = planeVertices;
 	hr = _pd3dDevice->CreateBuffer(&pbd, &initPlane, &_pPlaneVertexBuffer);
 
+
     if (FAILED(hr))
         return hr;
 
@@ -297,8 +302,15 @@ HRESULT Application::InitIndexBuffer()
 	initPlane.pSysMem = PlaneIndicies;
 	hr = _pd3dDevice->CreateBuffer(&pibd, &initPlane, &_pPlaneIndexBuffer);
 
+
+	CreateDDSTextureFromFile(_pd3dDevice, defaultTexturePath, nullptr, &_pDefaultTextureRV);
+	InitGameObject(Vector3D(), "Models/cylinder.obj", _pDefaultTextureRV);
+	InitGameObject(Vector3D(0.f,2.0f,0.0f), "Models/cube.obj", _pDefaultTextureRV);
+
+	UINT tstCount = testData.IndexCount;
     if (FAILED(hr))
         return hr;
+
 
 	return S_OK;
 }
@@ -481,8 +493,7 @@ HRESULT Application::InitDevice()
 	InitIndexBuffer();
 	
 	//donutMeshData =OBJLoader::Load("Models/donut.obj",_pd3dDevice);
-	CreateDDSTextureFromFile(_pd3dDevice, defaultTexturePath, nullptr, &_pDefaultTextureRV);
-	InitGameObject(Vector3D(), "Models/donut.obj", _pDefaultTextureRV);
+
     // Set primitive topology
     _pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -565,9 +576,6 @@ void Application::Update()
             dwTimeStart = dwTimeCur;
 
         t = (dwTimeCur - dwTimeStart) / 1000.0f;
-
-	
-		
 
     }
 	if (!cameras.empty()) {
@@ -657,14 +665,13 @@ void Application::Draw()
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 	
+	DrawGameObjects(_pImmediateContext,cb);
 
-	//Draw cubes
 	_pImmediateContext->IASetVertexBuffers(0, 1, &_pVertexBuffer, &stride, &offset);
-	// Set index buffer
 	_pImmediateContext->IASetIndexBuffer(_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+	//Draw cubes
 
 	DrawAstroids(cb);
-	DrawGameObjects(_pImmediateContext,cb);
 
 
     _pSwapChain->Present(0, 0);
@@ -707,10 +714,17 @@ void Application::ChangeCameraMode()
 	GetActiveCamera()->ToggleCameraMode();
 }
 
-void Application::RollCamera(bool rollRight)
+void Application::MoveObjectForward()
 {
-	GetActiveCamera()->Roll(rollRight);
+	MoveActiveGameObject(Vector3D(0.0f, 0.0f, 1.0f));
 }
+
+void Application::MoveActiveGameObject(Vector3D direction)
+{
+	GetSelectedObject()->Move(direction, objectMoveSpeed);
+}
+
+
 
 
 
@@ -767,6 +781,7 @@ void Application::ScaleAndOffsetAstroids(float time)
 
 void Application::DrawAstroids(ConstantBuffer cb)
 {
+	
 	std::vector< XMMATRIX> worldMatrices;
 	for (int i = 0; i < _worldMatrices.size(); i++) {
 		worldMatrices.push_back(XMLoadFloat4x4(&_worldMatrices[i]));
@@ -774,6 +789,10 @@ void Application::DrawAstroids(ConstantBuffer cb)
 
 	for (int i = 0; i < _worldMatrices.size(); i++) {
 		cb.mWorld = XMMatrixTranspose(worldMatrices[i]);
+
+	
+		// Set index buffer
+	
 		_pImmediateContext->UpdateSubresource(_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 		_pImmediateContext->DrawIndexed(36, 0, 0);
 	}
@@ -791,7 +810,7 @@ void Application::CreateD11Vertex(Vertex3D arr[],  int arrLength)
 	for (int i = 0; i< arrLength; i++) {
 		//Pass to  position and UV to array
 		tempVertexArr[i].Pos = XMFLOAT3(arr[i].Pos.show_X(), arr[i].Pos.show_Y(), arr[i].Pos.show_Z());
-		tempVertexArr[i].UV = arr[i].UV;
+		tempVertexArr[i].TexC = arr[i].UV;
 		//if it is the first vertex of the triangle 
 		if (triangleVertexCount == 0) {
 			vec1 = arr[i + 1].Pos - arr[i].Pos;//the index positions are both greater
@@ -914,6 +933,16 @@ void Application::CycleBetweenCameras()
 	}
 }
 
+void Application::CycleBetweenGameObjects()
+{
+	if (selectedGameObjectIndex >= _gameObjects.size() - 1) {
+		selectedGameObjectIndex = 0;
+	}
+	else {
+		selectedGameObjectIndex++;
+	}
+}
+
 void Application::SetActiveCamera(int index)
 {
 	if (index <= cameras.size()-1) {
@@ -927,6 +956,11 @@ void Application::SetActiveCamera(int index)
 Camera* Application::GetActiveCamera()
 {
 	return cameras[activeCamIndex];
+}
+
+GameObject* Application::GetSelectedObject()
+{
+	return _gameObjects[selectedGameObjectIndex];
 }
 
 //=========================================WINDOWS PROCS================================================

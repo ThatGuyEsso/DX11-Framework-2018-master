@@ -2,19 +2,25 @@
 
 GameObject::GameObject(char* filePath, Vector3D initialPosition, ID3D11Device* device, ID3D11ShaderResourceView* texture): _pTextureRV(texture)
 {
-	_ObjectModel = OBJLoader::Load(filePath, device);
+	_ObjectModel = OBJLoader::Load(filePath, device,false);
 
 	_Position = initialPosition;
 	_Scale = Vector3D(1.0f, 1.0f, 1.0f);
 	_Rotation = Vector3D();
+	
 	XMStoreFloat4x4(&_OWorld, XMMatrixIdentity());
+}
+GameObject::~GameObject()
+{
+
+	_pTextureRV = nullptr;
 }
 void GameObject::Update(float time)
 {
-	XMVECTOR scale = DirectX::XMVectorSet(_Scale.show_X(), _Scale.show_Y(), _Scale.show_Z(), 0.0f);
-
+	gTime = time;
 	//Update world
-	XMStoreFloat4x4(&_OWorld, XMMatrixScaling(_Scale.show_X(), _Scale.show_Y(), _Scale.show_Z()) *XMMatrixRotationX(_Rotation.show_X())*XMMatrixRotationY(_Rotation.show_Y())*XMMatrixRotationZ(_Rotation.show_Z())
+	XMStoreFloat4x4(&_OWorld, XMMatrixScaling(_Scale.show_X(), _Scale.show_Y(), _Scale.show_Z())
+		*XMMatrixRotationX(_Rotation.show_X())*XMMatrixRotationY(_Rotation.show_Y())*XMMatrixRotationZ(_Rotation.show_Z())
 		* XMMatrixTranslation(_Position.show_X(), _Position.show_Y(), _Position.show_Z()));
 }
 
@@ -55,4 +61,10 @@ void GameObject::Draw(ID3D11DeviceContext* _pImmediateContext)
 	_pImmediateContext->IASetIndexBuffer(_ObjectModel.IndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 
 	_pImmediateContext->DrawIndexed(_ObjectModel.IndexCount, 0, 0);
+}
+
+void GameObject::Move(Vector3D dir, float moveSpeed)
+{
+	Vector3D newPosition = _Position + (dir *moveSpeed* gTime);
+	_Position = newPosition;
 }

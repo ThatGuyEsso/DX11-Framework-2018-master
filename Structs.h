@@ -15,7 +15,7 @@ struct Vertex
 {
 	XMFLOAT3 Pos;
 	XMFLOAT3 Normal;
-	XMFLOAT2 UV;
+	XMFLOAT2 TexC;
 	bool operator<(const Vertex other) const{
 	return memcmp((void*)this, (void*)&other, sizeof(Vertex)) > 0;
 	};

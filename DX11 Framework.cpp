@@ -71,6 +71,13 @@ int CALLBACK wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 				theApp->MoveActiveCamAlongY(false);
 			}
 
+			if (theApp->_input->GetKey(VK_SHIFT)){
+				theApp->MoveObjectForward();
+			}
+			if (theApp->_input->GetKey(VK_CONTROL)) {
+				theApp->CycleBetweenGameObjects();
+			}
+
 		}
 	
 		theApp->Update();

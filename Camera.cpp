@@ -234,7 +234,7 @@ void Camera::RotateYAxis(bool rotateRight)
 			
 			}
 			
-			SetPosition(CreateRotation(rotDeg, Vector3D(0.0f, 1.0f, 0.0f)));
+			SetPosition(CreateRotation(rotDeg *time, Vector3D(0.0f, 1.0f, 0.0f)));
 		}
 	}
 }
@@ -252,7 +252,7 @@ void Camera::RotateXAxis(bool rotateUp)
 
 			}
 
-			SetPosition(CreateRotation(rotDeg, Vector3D(1.0f, 0.0f, 0.0f)));
+			SetPosition(CreateRotation(rotDeg*time, Vector3D(1.0f, 0.0f, 0.0f)));
 
 			
 		}
@@ -264,11 +264,11 @@ void Camera::Strafe(bool strafeRight)
 	if (_hasControl) {
 		if (_isLookingForward) {
 			if (strafeRight) {
-				Vector3D moveDir = Vector3D(_eye.show_X() + _cameraStrafeAmount, _eye.show_Y(), _eye.show_Z());
+				Vector3D moveDir = Vector3D(_eye.show_X() + _cameraStrafeAmount*time, _eye.show_Y(), _eye.show_Z());
 				SetPosition(moveDir);
 			}
 			else {
-				Vector3D moveDir = Vector3D(_eye.show_X() - _cameraStrafeAmount, _eye.show_Y(), _eye.show_Z());
+				Vector3D moveDir = Vector3D(_eye.show_X() - _cameraStrafeAmount*time, _eye.show_Y(), _eye.show_Z());
 				SetPosition(moveDir);
 			}
 		}
@@ -280,11 +280,11 @@ void Camera::Move(bool moveForward)
 	if (_hasControl) {
 		if (_isLookingForward) {
 			if (moveForward) {
-				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y(), _eye.show_Z() + _cameraStrafeAmount);
+				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y(), _eye.show_Z() + _cameraStrafeAmount*time);
 				SetPosition(moveDir);
 			}
 			else {
-				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y(), _eye.show_Z() - _cameraStrafeAmount);
+				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y(), _eye.show_Z() - _cameraStrafeAmount*time);
 				SetPosition(moveDir);
 			}
 		}
@@ -297,28 +297,15 @@ void Camera::MoveOnY(bool up)
 
 			
 			if (up) {
-				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y() + _cameraVerticalMoveAmount, _eye.show_Z());
+				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y() + (time*_cameraVerticalMoveAmount), _eye.show_Z());
 				SetPosition(moveDir);
 			}
 			else {
-				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y()-_cameraVerticalMoveAmount, _eye.show_Z());
+				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y()- (time * _cameraVerticalMoveAmount), _eye.show_Z());
 				SetPosition(moveDir);
 			}
 
 	}
-}
-
-void Camera::Roll(bool rollRight)
-{
-	if (_hasControl) {
-		if (_isLookingForward) {
-
-			if (rollRight) {
-				SetForward(_forward += Vector3D(time * _rotationSpeed, 0.0f, 0.0f));
-			}
-		}
-	}
-
 }
 
 

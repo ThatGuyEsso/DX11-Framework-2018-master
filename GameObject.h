@@ -15,12 +15,14 @@ private:
 	ID3D11ShaderResourceView* _pTextureRV = nullptr;
 
 	XMFLOAT4X4 _OWorld;
+
+	float gTime;
 public:
 	GameObject(char* filePath,Vector3D initialPosition, ID3D11Device* device, ID3D11ShaderResourceView* texture);
-	~GameObject() = default;
+	~GameObject();
 	void Update(float time);
 	void Draw(ID3D11DeviceContext* _pImmediateContext);
-
+	void Move(Vector3D dir, float moveSpeed);
 	Vector3D GetPosition();
 	MeshData GetMesh();
 	ID3D11ShaderResourceView* GetTexture(); 

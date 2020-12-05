@@ -88,12 +88,12 @@ private:
 private:
 	int minNumOfAstroids =100;
 	int maxNumOfAstroids = 250;
-
-	//MeshData donutMeshData;
+	float objectMoveSpeed =1.0f;
+	MeshData testData;
 	float _NearDepth = 0.01f, _FarDepth = 100.0f;
 	bool isWireFrameModeOn = false;
 	int activeCamIndex =0;
-	int selectedGameObject = 0;
+	int selectedGameObjectIndex = 0;
 	std::vector<Camera*> cameras;
 	std::vector<GameObject*> _gameObjects;
 public:
@@ -113,7 +113,8 @@ public:
 	void OrbitCameraY(bool orbitRight);
 	void OrbitCameraX(bool orbitUP);
 	void ChangeCameraMode();
-	void RollCamera(bool rollRight);
+
+	void MoveObjectForward();
 public:
 
 	InputManager* _input;
@@ -134,6 +135,7 @@ private:
 	void CleanUpCameras();
 	void UpdateGameObjects(float time);
 	void CleanUpGameObjects();
+	void MoveActiveGameObject(Vector3D direction);
 
 };
 
