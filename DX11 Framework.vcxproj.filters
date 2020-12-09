@@ -9,6 +9,15 @@
       <UniqueIdentifier>{2c3d4c8c-5d1a-459a-a05a-a4e4b608a44e}</UniqueIdentifier>
       <Extensions>fx;fxh;hlsl</Extensions>
     </Filter>
+    <Filter Include="Vendors">
+      <UniqueIdentifier>{59107335-ebf4-4669-be4d-b59ee15d1461}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vendors\imgui">
+      <UniqueIdentifier>{04b55a09-c43c-46ae-8504-eb3043b87c76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vendors\rapidXML">
+      <UniqueIdentifier>{3f01036d-c641-45cd-ad0f-4e114461551f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -23,6 +32,43 @@
     <ClInclude Include="Commons.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectPrimitives.h" />
+    <ClInclude Include="vendor\imgui\imgui.h">
+      <Filter>Vendors\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\imgui\imgui_internal.h">
+      <Filter>Vendors\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\imgui\imstb_rectpack.h">
+      <Filter>Vendors\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\imgui\imstb_textedit.h">
+      <Filter>Vendors\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\imgui\imstb_truetype.h">
+      <Filter>Vendors\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\imgui\imconfig.h">
+      <Filter>Vendors\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidxml.hpp">
+      <Filter>Vendors\rapidXML</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidxml_iterators.hpp">
+      <Filter>Vendors\rapidXML</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidxml_print.hpp">
+      <Filter>Vendors\rapidXML</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidxml_utils.hpp">
+      <Filter>Vendors\rapidXML</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIManager.h" />
+    <ClInclude Include="vendor\imgui\imgui_impl_dx11.h">
+      <Filter>Vendors\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\imgui\imgui_impl_win32.h">
+      <Filter>Vendors\imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -35,6 +81,28 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectPrimitives.cpp" />
+    <ClCompile Include="vendor\imgui\imgui.cpp">
+      <Filter>Vendors\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\imgui_demo.cpp">
+      <Filter>Vendors\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\imgui_draw.cpp">
+      <Filter>Vendors\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\imgui_tables.cpp">
+      <Filter>Vendors\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\imgui_widgets.cpp">
+      <Filter>Vendors\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIManager.cpp" />
+    <ClCompile Include="vendor\imgui\imgui_impl_dx11.cpp">
+      <Filter>Vendors\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\imgui_impl_win32.cpp">
+      <Filter>Vendors\imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">

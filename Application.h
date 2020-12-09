@@ -6,6 +6,7 @@
 #include <directxcolors.h>
 #include "resource.h"
 #include <vector>
+#include<string>
 #include <iostream>
 #include "DDSTextureLoader.h"
 #include "InputManager.h"
@@ -14,9 +15,11 @@
 #include "Camera.h"
 #include "Commons.h"
 #include "GameObjectPrimitives.h"
+#include "rapidxml.hpp"
+#include "rapidxml_utils.hpp"
+#include "GUIManager.h"
 
-//using namespace DirectX;
-
+using namespace rapidxml;
 
 
 class Application
@@ -33,14 +36,9 @@ private:
 	ID3D11VertexShader*     _pVertexShader;
 	ID3D11PixelShader*      _pPixelShader;
 	ID3D11InputLayout*      _pVertexLayout;
- 	ID3D11Buffer*           _pVertexBuffer;
-	ID3D11Buffer*           _pIndexBuffer;
-	ID3D11Buffer*			_pPlaneVertexBuffer;
-	ID3D11Buffer*			_pPlaneIndexBuffer;
-	ID3D11Buffer*			_pPyramidVertexBuffer;
-	ID3D11Buffer*			_pPyramidIndexBuffer;
+	XMFLOAT4X4              _world;
 	ID3D11Buffer*           _pConstantBuffer;
-	XMFLOAT4X4              _world,_worldPlane;
+
 	std::vector<GameObjectPrimitives*> _astroids;
 	std::vector<float>		_astroidScales;
 	std::vector<float>		_astroidOffset;
@@ -66,7 +64,7 @@ private:
 	ID3D11ShaderResourceView* _pTextureRV = nullptr;
 	ID3D11ShaderResourceView* _pDefaultTextureRV = nullptr;
 	ID3D11SamplerState* _pSamplerLinear = nullptr;
-
+	GUIManager* _guiManager;
 
 
 
@@ -75,14 +73,12 @@ private:
 	HRESULT InitDevice();
 	HRESULT CompileShaderFromFile(WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut);
 	HRESULT InitShadersAndInputLayout();
-	HRESULT InitVertexBuffer();
-	HRESULT InitIndexBuffer();
+	void InitGame();
+
 	void Cleanup();
 
 	UINT _WindowHeight;
 	UINT _WindowWidth;
-
-	Vertex* tempVertexArr;
 
 
 private:
@@ -112,15 +108,19 @@ public:
 	void MoveActiveCamAlongY(bool up);
 	void OrbitCameraY(bool orbitRight);
 	void OrbitCameraX(bool orbitUP);
+	void RotateCameraYaw(bool lookRight);
+	void RotateCameraPitch(bool lookUp);
+	void ActiveCameraStartPath();
 	void ChangeCameraMode();
 	void SetActiveCameraTargetGameObject();
-	
+
 	void MoveObjectForward();
 public:
 
 	InputManager* _input;
 	
 private:
+	void CreateScene(std::string levelName);
 	Camera* GetActiveCamera();
 	GameObject* GetSelectedObject();
 	void SetNumberOfAStroid();
@@ -130,14 +130,20 @@ private:
 	static LRESULT CALLBACK MsgSetUp(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	LRESULT MsgHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-	void InitCamera(Vector3D initPos, Vector3D lootAt, Vector3D up);
-	void InitGameObject(Vector3D initPos,char* modelPath, ID3D11ShaderResourceView* texture);
-	void InitPrimitiveGameObject(GameObjectPrimitives::PrimitiveType objectType,Vector3D initPos, ID3D11ShaderResourceView* texture);
+	Camera* InitCamera(Vector3D initPos, Vector3D lookAt, Vector3D up);
+	GameObject* InitGameObject(Vector3D initPos,char* modelPath, ID3D11ShaderResourceView* texture);
+	GameObjectPrimitives* InitPrimitiveGameObject(GameObjectPrimitives::PrimitiveType objectType,Vector3D initPos, ID3D11ShaderResourceView* texture);
 	void DrawGameObjects(ID3D11DeviceContext* deviceContext, ConstantBuffer cb);
 	void CleanUpCameras();
 	void UpdateGameObjects(float time);
 	void CleanUpGameObjects();
 	void MoveActiveGameObject(Vector3D direction);
-
+	xml_node<>* FindChildNode(xml_node<>* parent, const std::string& type, const std::string& attrib, const std::string value);
+	void CompileLevelData(xml_node<>* data);
+	void InitLevelData(xml_node<>* node, const std::string nodeType);
+	Vector3D ConvertCharToVector3D(const std::string newX, const std::string newY, const std::string newZ);
+	void InitGameObjectFromNode(xml_node<>* gameObjectNode);
+	void InitPrimitiveGameObjectFromNode(xml_node<>* gameObjectNode);
+	void InitCameraFromNode(xml_node<>* gameObjectNode);
 };
 

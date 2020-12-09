@@ -107,6 +107,16 @@ Vector3D& Vector3D::operator=(const Vector3D& vec)
 
 }
 
+bool Vector3D::operator==(const Vector3D& vec)
+{
+	if (x == vec.x) {
+		if (y == vec.y) {
+			if (z == vec.z)return true;
+		}
+	}
+	return false;
+}
+
 float Vector3D::dot_product(const Vector3D& vec)
 {
 	//returns (x1*x2 + y1*y2 + x1*z2) where these are the terms from
@@ -126,8 +136,8 @@ Vector3D Vector3D::cross_product(const Vector3D& vec)
 
 Vector3D Vector3D::normalization()
 {
-	
-	return  *this /= magnitude();;
+	if (magnitude() == 0) return *this;
+	return  *this /= magnitude();
 }
 
 float Vector3D::square()

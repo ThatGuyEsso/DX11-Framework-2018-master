@@ -23,63 +23,93 @@ int CALLBACK wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+			//Q Change camera mode (look at targte to loot to target)
 			if (theApp->_input->GetKey(0x51)) {
 				theApp->ChangeCameraMode();
 			}
+			//Space toggle wireframe mode
 			if (theApp->_input->GetKey(VK_SPACE)) {
 				theApp->ToggleWireFrame();
 			}
+			//C cycle between Cameras
 			if (theApp->_input->GetKey(0x43)) {
 				theApp->CycleBetweenCameras();
 			}
-
+			//alpha key1
 			if (theApp->_input->GetKey(0x31)) {
 				theApp->SetActiveCamera(0);
 			}
+			//alpha key2
 			if (theApp->_input->GetKey(0x32)) {
 				theApp->SetActiveCamera(1);
 			}
+			//alpha key3
 			if (theApp->_input->GetKey(0x33)) {
 				theApp->SetActiveCamera(2);
 			}
+			//up
 			if (theApp->_input->GetKey(VK_UP) ) {
 				theApp->ZoomActiveCamera(true);
 			}
+			//down
 			else if (theApp->_input->GetKey(VK_DOWN)){
 				theApp->ZoomActiveCamera(false);
 			}
-
-			if (theApp->_input->GetKey(0x46)) {
-				theApp->OrbitCameraX(true);
-			}
-			else if (theApp->_input->GetKey(0x44))
-			{
-				theApp->OrbitCameraX(false);
-			}
+			//Right Strafe Right
 			if (theApp->_input->GetKey(VK_RIGHT)) {
-				theApp->OrbitCameraY(true);
+			
 				theApp->StrafeActiveCamera(true);
 			}
+			//Left Strafe Left
 			else if (theApp->_input->GetKey(VK_LEFT)) {
-				theApp->OrbitCameraY(false);
+
+	
 				theApp->StrafeActiveCamera(false);
 			}
+			//W orbit/rotate up
+			if (theApp->_input->GetKey(0x57)) {
+				theApp->OrbitCameraX(true);
+				theApp->RotateCameraPitch(true);
+			}
+			//S orbit/rotate S
+			else if (theApp->_input->GetKey(0x53))
+			{
+				theApp->OrbitCameraX(false);
+				theApp->RotateCameraPitch(false);
+			}
+			//D orbit/rotate Right
+			if (theApp->_input->GetKey(0x44)) {
+				theApp->OrbitCameraY(true);
+				theApp->RotateCameraYaw(true);
+			}
+			//A orbit/rotate Right
+			else if (theApp->_input->GetKey(0x41)) {
+				theApp->OrbitCameraY(false);
+				theApp->RotateCameraYaw(false);
+			}
+			//+ Move camera Up 
 			if (theApp->_input->GetKey(VK_OEM_PLUS)) {
 				theApp->MoveActiveCamAlongY(true);
 			}
+			//+ Move camera Down 
 			else if (theApp->_input->GetKey(VK_OEM_MINUS)) {
 				theApp->MoveActiveCamAlongY(false);
 			}
 
-			if (theApp->_input->GetKey(VK_SHIFT)){
+			if (theApp->_input->GetKey(0x47)){
 				theApp->MoveObjectForward();
 			}
-			if (theApp->_input->GetKey(VK_CONTROL)) {
+			//G cycle between Game objects
+			if (theApp->_input->GetKey(0x47)) {
 				theApp->CycleBetweenGameObjects();
 			}
-
-			if (theApp->_input->GetKey(0x58)) {
+			//B Bind Camera to gameobject
+			if (theApp->_input->GetKey(0x42)) {
 				theApp->SetActiveCameraTargetGameObject();
+			}
+
+			if (theApp->_input->GetKey(VK_END)) {
+				theApp->ActiveCameraStartPath();
 			}
 		}
 	

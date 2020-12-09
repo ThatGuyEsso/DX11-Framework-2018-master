@@ -21,7 +21,7 @@ void GameObject::Update(float time)
 	//Update world
 	XMStoreFloat4x4(&_OWorld, XMMatrixScaling(_Scale.show_X(), _Scale.show_Y(), _Scale.show_Z())
 		* XMMatrixRotationX(_Rotation.show_X()) * XMMatrixRotationY(_Rotation.show_Y()) * XMMatrixRotationZ(_Rotation.show_Z())
-		* XMMatrixTranslation(_Position.show_X(), _Position.show_Y(), _Position.show_Z()) * XMMatrixRotationZ(_orbitSpeed));
+		* XMMatrixTranslation(_Position.show_X(), _Position.show_Y(), _Position.show_Z()) * XMMatrixRotationY(_orbitSpeed));
 }
 
 

@@ -1,4 +1,5 @@
 #include "Application.h"
+
 Application::Application()
 {
 	_hInst = nullptr;
@@ -12,15 +13,12 @@ Application::Application()
 	_pRenderTargetView = nullptr;
 	_pVertexShader = nullptr;
 	_pPixelShader = nullptr;
-	_pVertexLayout = nullptr;
-	_pVertexBuffer = nullptr;
-	_pIndexBuffer = nullptr;
 	_pConstantBuffer = nullptr;
 	isWireFrameModeOn = false;
-	_input->instance();
-	InitCamera(Vector3D(0.0f, 0.0f, -5.0f), Vector3D(), Vector3D(0.0f, 1.0f, 0.0f));
-	InitCamera(Vector3D(5.0f, 4.0f, -2.0f), Vector3D(), Vector3D(0.0f, 1.0f, 0.0f));
-	InitCamera(Vector3D(5.0f, -10.0f, 5.0f), Vector3D(), Vector3D(0.0f, 1.0f, 0.0f));
+
+
+
+
 
 }
 
@@ -50,7 +48,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 
 	// Initialize the world matrix
 	XMStoreFloat4x4(&_world, XMMatrixIdentity());
-	SetNumberOfAStroid();
+
 
     // Initialize the view matrix
 
@@ -69,8 +67,9 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	_pd3dDevice->CreateSamplerState(&sampDesc, &_pSamplerLinear);
 	_pImmediateContext->PSSetSamplers(0, 1, &_pSamplerLinear);
 
+	CreateDDSTextureFromFile(_pd3dDevice, defaultTexturePath, nullptr, &_pDefaultTextureRV);
+	InitGame();
 	return S_OK;
-
 }
 
 
@@ -142,179 +141,16 @@ HRESULT Application::InitShadersAndInputLayout()
 	return hr;
 }
 
-HRESULT Application::InitVertexBuffer()
+void Application::InitGame()
 {
-	HRESULT hr;
-	
+	_input->instance();
+	_guiManager = new GUIManager();
+	_guiManager->Init(_hWnd,_pd3dDevice, _pImmediateContext);
+	CreateScene("Demo");
 
-	CreateD11Vertex(CubeVertices3D, 8);
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(bd));
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(Vertex) * 8;
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bd.CPUAccessFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA InitData;
-	ZeroMemory(&InitData, sizeof(InitData));
-	InitData.pSysMem = tempVertexArr;
-
-	hr = _pd3dDevice->CreateBuffer(&bd, &InitData, &_pVertexBuffer);
-
-	SimpleVertex pyramidVertices[] = {
-		{ XMFLOAT3(0.0f, 0.5f, 0.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },//top point,
-		{ XMFLOAT3(0.5f, -0.5f,- 0.5f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
-		{ XMFLOAT3(-0.5f, -0.5f,-0.5f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
-		{ XMFLOAT3(0.5f, -0.5f,0.5f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
-		{ XMFLOAT3(-0.5f, -0.5f,0.5f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
-	};
-
-
-
-	D3D11_BUFFER_DESC psbd;
-	ZeroMemory(&psbd, sizeof(psbd));
-	psbd.Usage = D3D11_USAGE_DEFAULT;
-	psbd.ByteWidth = sizeof(SimpleVertex) * 5;
-	psbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	psbd.CPUAccessFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA init;
-	ZeroMemory(&init, sizeof(init));
-	init.pSysMem = pyramidVertices;
-	hr = _pd3dDevice->CreateBuffer(&psbd, &init, &_pPyramidVertexBuffer);
-
-
-	SimpleVertex planeVertices[] = {
-		//First Row
-		{ XMFLOAT3(-0.4f, 0.0f, 0.4f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },//top left,
-		{ XMFLOAT3(-0.2f, 0.0f, 0.4f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.0f, 0.0f, 0.4f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.2f, 0.0f, 0.4f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.4f, 0.0f, 0.4f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-
-		//second row
-		{ XMFLOAT3(-0.4f, 0.0f, 0.2f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(-0.2f, 0.0f, 0.2f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.0f, 0.0f, 0.2f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.2f, 0.0f, 0.2f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.4f, 0.0f, 0.2f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-
-		//Third row
-		{ XMFLOAT3(-0.4f, 0.0f, 0.0f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(-0.2f, 0.0f, 0.0f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.2f, 0.0f, 0.0f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.4f, 0.0f, 0.0f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-
-		//4th row
-		{ XMFLOAT3(-0.4f, 0.0f, -0.2f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(-0.2f, 0.0f, -0.2f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.0f, 0.0f, -0.2f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.2f, 0.0f, -0.2f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.4f, 0.0f, -0.2f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-
-		//5th row
-		{ XMFLOAT3(-0.4f, 0.0f,-0.4f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(-0.2f, 0.0f, -0.4f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.0f, 0.0f, -0.4f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.2f, 0.0f, -0.4f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-		{ XMFLOAT3(0.4f, 0.0f, -0.4f), XMFLOAT4(1.0f, 0.0f, 0.5f, 1.0f) },
-
-	};
-
-
-
-	D3D11_BUFFER_DESC pbd;
-	ZeroMemory(&pbd, sizeof(pbd));
-	pbd.Usage = D3D11_USAGE_DEFAULT;
-	pbd.ByteWidth = sizeof(SimpleVertex) * 25;
-	pbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	pbd.CPUAccessFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA initPlane;
-	ZeroMemory(&initPlane, sizeof(initPlane));
-	initPlane.pSysMem = planeVertices;
-	hr = _pd3dDevice->CreateBuffer(&pbd, &initPlane, &_pPlaneVertexBuffer);
-
-
-    if (FAILED(hr))
-        return hr;
-
-	return S_OK;
 }
 
-HRESULT Application::InitIndexBuffer()
-{
-	HRESULT hr;
 
-    // Create index buffer
- 
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(bd));
-
-    bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = sizeof(WORD) * 36;     
-    bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	bd.CPUAccessFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA InitData;
-	ZeroMemory(&InitData, sizeof(InitData));
-    InitData.pSysMem = CubeIndices;
-    hr = _pd3dDevice->CreateBuffer(&bd, &InitData, &_pIndexBuffer);
-
-
-	// Create index buffer
-	WORD pyramindIndices[] =
-	{
-		0,1,2,
-		0,2,4,
-		4,3,0,
-		3,1,0,
-		2,3,4,
-		2,1,3
-
-	};
-
-	D3D11_BUFFER_DESC pyibd;
-	ZeroMemory(&pyibd, sizeof(pyibd));
-
-	pyibd.Usage = D3D11_USAGE_DEFAULT;
-	pyibd.ByteWidth = sizeof(WORD) * 24;
-	pyibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	pyibd.CPUAccessFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA init;
-	ZeroMemory(&init, sizeof(InitData));
-	init.pSysMem = pyramindIndices;
-	hr = _pd3dDevice->CreateBuffer(&pyibd, &init, &_pPyramidIndexBuffer);
-
-	
-	D3D11_BUFFER_DESC pibd;
-	ZeroMemory(&pibd, sizeof(pibd));
-
-	pibd.Usage = D3D11_USAGE_DEFAULT;
-	pibd.ByteWidth = sizeof(WORD) * 96;
-	pibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	pibd.CPUAccessFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA initPlane;
-	ZeroMemory(&initPlane, sizeof(initPlane));
-	initPlane.pSysMem = PlaneIndicies;
-	hr = _pd3dDevice->CreateBuffer(&pibd, &initPlane, &_pPlaneIndexBuffer);
-
-
-	CreateDDSTextureFromFile(_pd3dDevice, defaultTexturePath, nullptr, &_pDefaultTextureRV);
-	InitGameObject(Vector3D(), "Models/cylinder.obj", _pDefaultTextureRV);
-	InitGameObject(Vector3D(0.f,2.0f,0.0f), "Models/cube.obj", _pDefaultTextureRV);
-	InitPrimitiveGameObject(GameObjectPrimitives::PrimitiveType::Cube,Vector3D(0.f, -2.0f, 0.0f), _pDefaultTextureRV);
-
-	UINT tstCount = testData.IndexCount;
-    if (FAILED(hr))
-        return hr;
-
-
-	return S_OK;
-}
 
 HRESULT Application::InitWindow(HINSTANCE hInstance, int nCmdShow)
 {
@@ -489,9 +325,9 @@ HRESULT Application::InitDevice()
     _pImmediateContext->RSSetViewports(1, &vp);
 
 	InitShadersAndInputLayout();
-	InitVertexBuffer();
 
-	InitIndexBuffer();
+
+
 	
 	//donutMeshData =OBJLoader::Load("Models/donut.obj",_pd3dDevice);
 
@@ -541,11 +377,10 @@ void Application::Cleanup()
 	if (_depthStencilView) _depthStencilView->Release();
 	if (_depthStencilBuffer) _depthStencilBuffer->Release();
     if (_pConstantBuffer) _pConstantBuffer->Release();
-    if (_pVertexBuffer) _pVertexBuffer->Release();
-    if (_pIndexBuffer) _pIndexBuffer->Release();
-    if (_pVertexLayout) _pVertexLayout->Release();
-	if (_pPyramidIndexBuffer) _pPyramidIndexBuffer->Release();
-	if (_pPyramidVertexBuffer) _pPyramidVertexBuffer->Release();
+;
+ 
+	
+
     if (_pVertexShader) _pVertexShader->Release();
     if (_pPixelShader) _pPixelShader->Release();
     if (_pRenderTargetView) _pRenderTargetView->Release();
@@ -555,7 +390,7 @@ void Application::Cleanup()
 
 	CleanUpCameras();
 	CleanUpGameObjects();
-	
+	_input =nullptr;
 }
 
 void Application::Update()
@@ -585,7 +420,7 @@ void Application::Update()
 	
 
 	UpdateGameObjects(t);
-	ScaleAndOffsetAstroids(t);
+	if (!_astroids.empty())	ScaleAndOffsetAstroids(t);
 	gTime = t;
 	lightDirection = XMFLOAT3(0.25f, 0.5f, -1.0f);
 	// Diffuse material properties (RGBA)
@@ -662,14 +497,12 @@ void Application::Draw()
 
 
 
-	// Set vertex buffer
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-	
 	DrawGameObjects(_pImmediateContext,cb);
 
-	DrawAstroids(cb, _pImmediateContext);
+	if(!_astroids.empty())	DrawAstroids(cb, _pImmediateContext);
 
+	
+	_guiManager->DrawGUI();
 
     _pSwapChain->Present(0, 0);
 }
@@ -706,6 +539,21 @@ void Application::OrbitCameraX(bool orbitUP)
 	GetActiveCamera()->RotateXAxis(orbitUP);
 }
 
+void Application::RotateCameraYaw(bool lookRight)
+{
+	GetActiveCamera()->adjustYaw(lookRight);
+}
+
+void Application::RotateCameraPitch(bool lookUp)
+{
+	GetActiveCamera()->adjustPitch(lookUp);
+}
+
+void Application::ActiveCameraStartPath()
+{
+	GetActiveCamera()->BeginFollowingPath();
+}
+
 void Application::ChangeCameraMode()
 {
 	GetActiveCamera()->ToggleCameraMode();
@@ -728,6 +576,203 @@ void Application::MoveActiveGameObject(Vector3D direction)
 	GetSelectedObject()->Move(direction, objectMoveSpeed);
 }
 
+xml_node<>* Application::FindChildNode(xml_node<>* parent, const std::string& type, const std::string& attrib, const std::string value)
+{
+	//get parent node
+	xml_node<>* node = parent->first_node(type.c_str());
+	while (node)
+	{
+		//if get attribute of node
+		xml_attribute<>* attribute = node->first_attribute(attrib.c_str());
+		//if this attribue is equal to the value
+		if (attribute != nullptr) {
+
+			if (attribute && value == attribute->value()) return node; // node found return
+			if(node->next_sibling(type.c_str())!=0)node = node->next_sibling(type.c_str());
+	
+		}
+	}
+	//no node found give nullptr
+	return nullptr;
+
+}
+
+void Application::CompileLevelData(xml_node<>* data)
+{
+	//Step into children of data source
+	xml_node<>* currentChild = data->first_node();
+	if (currentChild == nullptr) return; //if child is null return
+
+	while (currentChild) {
+		InitLevelData(currentChild, currentChild->name());
+
+		currentChild = currentChild->next_sibling();
+	}
+	SetWindowTextA(_hWnd, "compilation Complete");
+}
+
+void Application::InitLevelData(xml_node<>* node, const std::string nodeType)
+{
+	xml_node<>* object = node;
+	if (object == nullptr) return;
+
+	if (nodeType == "camera") {
+		InitCameraFromNode(object);
+	}
+	else if (nodeType == "showAstroids") {
+
+		std::string isShowing = object->first_attribute("bool")->value();
+
+		if (isShowing == "true") SetNumberOfAStroid();
+	}
+	else if (nodeType == "gameObject") {
+		InitGameObjectFromNode(object);
+	
+	}
+	else if (nodeType == "primitiveObject") {
+		InitPrimitiveGameObjectFromNode(object);
+
+	}
+}
+
+Vector3D Application::ConvertCharToVector3D(const std::string newX, const std::string newY, const std::string newZ)
+{
+	float x, y, z;
+	x = atoi(newX.c_str());
+	y = atoi(newY.c_str());
+	z = atoi(newZ.c_str());
+	return Vector3D(x, y, z);
+}
+
+void Application::InitGameObjectFromNode(xml_node<>* gameObjectNode)
+{
+	xml_node<>* object = gameObjectNode;
+
+		std::string posX = object->first_attribute("xPos")->value();
+		std::string posY = object->first_attribute("yPos")->value();
+		std::string posZ = object->first_attribute("zPos")->value();
+
+		char* model = object->first_attribute("model")->value();
+		char* texturePath = object->first_attribute("texturePath")->value();
+		//connvert path to wide string
+		size_t convertedChars = 0;
+		size_t newsize = strlen(texturePath) + 1;
+		wchar_t* wcstring = new wchar_t[newsize];
+		mbstowcs_s(&convertedChars, wcstring, newsize, texturePath, _TRUNCATE);
+		ID3D11ShaderResourceView* tex;
+		CreateDDSTextureFromFile(_pd3dDevice, wcstring, nullptr, &tex);
+
+
+		GameObject* tempRef = InitGameObject(ConvertCharToVector3D(posX, posY, posZ), model, tex);
+		if (object->first_node("scale") != 0) {
+			std::string scaleX = object->first_node("scale")->first_attribute("xScale")->value();
+			std::string scaleY = object->first_node("scale")->first_attribute("yScale")->value();
+			std::string scaleZ = object->first_node("scale")->first_attribute("zScale")->value();
+			tempRef->SetLocalScale(ConvertCharToVector3D(scaleX, scaleY, scaleZ));
+		}
+		if (object->first_node("roation") != 0) {
+			std::string rotX = object->first_node("roation")->first_attribute("xRot")->value();
+			std::string rotY = object->first_node("roation")->first_attribute("yRot")->value();
+			std::string rotZ = object->first_node("roation")->first_attribute("zRot")->value();
+			tempRef->SetRotation(ConvertCharToVector3D(rotX, rotY, rotZ));
+		}
+
+
+}
+
+void Application::InitPrimitiveGameObjectFromNode(xml_node<>* gameObjectNode)
+{
+	xml_node<>* object = gameObjectNode;
+	std::string posX = object->first_attribute("xPos")->value();
+	std::string posY = object->first_attribute("yPos")->value();
+	std::string posZ = object->first_attribute("zPos")->value();
+
+	char* texturePath = object->first_attribute("texturePath")->value();
+	//connvert path to wide string
+	size_t convertedChars = 0;
+	size_t newsize = strlen(texturePath) + 1;
+	wchar_t* wcstring = new wchar_t[newsize];
+	mbstowcs_s(&convertedChars, wcstring, newsize, texturePath, _TRUNCATE);
+	ID3D11ShaderResourceView* tex;
+	CreateDDSTextureFromFile(_pd3dDevice, wcstring, nullptr, &tex);
+
+
+
+	char* type = object->first_attribute("type")->value();
+	GameObjectPrimitives::PrimitiveType primitiveType = GameObjectPrimitives::PrimitiveType::Plane;
+
+	if (type == "plane") {
+		primitiveType = GameObjectPrimitives::PrimitiveType::Plane;
+	}
+	else if (type == "cube") {
+		primitiveType = GameObjectPrimitives::PrimitiveType::Cube;
+	}
+	else if (type == "pyramid") {
+		primitiveType = GameObjectPrimitives::PrimitiveType::Pyramid;
+	}
+
+	GameObjectPrimitives* tempRef = InitPrimitiveGameObject(primitiveType, ConvertCharToVector3D(posX, posY, posZ), tex);
+
+	if (object->first_node("scale") != 0) {
+		std::string scaleX = object->first_node("scale")->first_attribute("xScale")->value();
+		std::string scaleY = object->first_node("scale")->first_attribute("yScale")->value();
+		std::string scaleZ = object->first_node("scale")->first_attribute("zScale")->value();
+		tempRef->SetLocalScale(ConvertCharToVector3D(scaleX, scaleY, scaleZ));
+	}
+	if (object->first_node("roation") != 0) {
+		std::string rotX = object->first_node("roation")->first_attribute("xRot")->value();
+		std::string rotY = object->first_node("roation")->first_attribute("yRot")->value();
+		std::string rotZ = object->first_node("roation")->first_attribute("zRot")->value();
+		tempRef->SetRotation(ConvertCharToVector3D(rotX, rotY, rotZ));
+	}
+}
+
+void Application::InitCameraFromNode(xml_node<>* gameObjectNode)
+{
+	xml_node<>* object = gameObjectNode;
+	std::string posX = object->first_attribute("xPos")->value();
+	std::string posY = object->first_attribute("yPos")->value();
+	std::string posZ = object->first_attribute("zPos")->value();
+
+	std::string lookAtX = object->first_attribute("xLookAt")->value();
+	std::string lookAtY = object->first_attribute("yLookAt")->value();
+	std::string lookAtZ = object->first_attribute("zLookAt")->value();
+
+
+	std::string upX = object->first_attribute("xUp")->value();
+	std::string upY = object->first_attribute("yUp")->value();
+	std::string upZ = object->first_attribute("zUp")->value();
+	if (object->first_node() != 0)std::string lookDir =
+		object->first_node("isLookingFoward")->first_attribute()->value();
+
+	Camera* camRef =InitCamera(ConvertCharToVector3D(posX, posY, posZ), ConvertCharToVector3D(lookAtX, lookAtY, lookAtZ),
+		ConvertCharToVector3D(upX, upY, upZ));
+
+	xml_node<>* pathPointNode;
+	if (object->first_node("pathPoint") != 0) {
+		pathPointNode = object->first_node("pathPoint");
+
+
+		while (pathPointNode)
+		{
+			//if get attribute of node
+			std::string posX = pathPointNode->first_attribute("xPos")->value();
+			std::string posY = pathPointNode->first_attribute("yPos")->value();
+			std::string posZ = pathPointNode->first_attribute("zPos")->value();
+			//if this attribue is equal to the value
+			camRef->AddPathPoint(ConvertCharToVector3D(posX, posY, posZ));
+		
+			if (pathPointNode->next_sibling("pathPoint") != 0) {
+				pathPointNode = pathPointNode->next_sibling("pathPoint");
+			}
+			else {
+				break;
+			}
+			
+		}
+	}
+}
+
 
 
 
@@ -747,7 +792,7 @@ void Application::SetNumberOfAStroid()
 	}
 	for (int i = 0; i < _astroids.size(); i++) {
 
-		float x = float(rand() % 100) * 0.1f;
+		float x = float(rand() % 500) * 0.1f;
 		if (x == 0.0f) {
 			x += float(rand() % 1 + 5) * 0.1f;
 		}
@@ -778,7 +823,7 @@ void Application::ScaleAndOffsetAstroids(float time)
 
 	for (int i = 0; i < _astroids.size(); i++) {
 
-		_astroids[i]->SetPosition(Vector3D(_astroidOffset[i] * 1.25f, _astroidOffset[i] * 1.25f, 0.0f));
+		_astroids[i]->SetPosition(Vector3D(_astroidOffset[i] * 1.25f, 0.0f, _astroidOffset[i] * 1.25f));
 		_astroids[i]->SetLocalScale(Vector3D(_astroidScales[i], _astroidScales[i], _astroidScales[i]));
 		_astroids[i]->SetRotation(Vector3D(0.0f,0.0f, -t ));
 		_astroids[i]->SetOrbitSpeed(t*_astroidRotationSpeedScalar[i]/2.0f);
@@ -800,66 +845,6 @@ void Application::DrawAstroids(ConstantBuffer cb, ID3D11DeviceContext* deviceCon
 	}
 }
 
-void Application::CreateD11Vertex(Vertex3D arr[],  int arrLength)
-{
-	tempVertexArr = new Vertex[arrLength];
-
-	int triangleVertexCount =0;
-	//int vertexIndex = 0;//start at index one  (second element)
-	Vector3D vec1;
-	Vector3D vec2;
-	//Add all positions
-	for (int i = 0; i< arrLength; i++) {
-		//Pass to  position and UV to array
-		tempVertexArr[i].Pos = XMFLOAT3(arr[i].Pos.show_X(), arr[i].Pos.show_Y(), arr[i].Pos.show_Z());
-		tempVertexArr[i].TexC = arr[i].UV;
-		//if it is the first vertex of the triangle 
-		if (triangleVertexCount == 0) {
-			vec1 = arr[i + 1].Pos - arr[i].Pos;//the index positions are both greater
-			vec2 = arr[i + 2].Pos - arr[i].Pos;
-			Vector3D cross = vec1.cross_product(vec2);
-			Vector3D crossNormalised = cross.normalization();
-			//Upload normal data
-			tempVertexArr[i].Normal = XMFLOAT3(crossNormalised.show_X(), crossNormalised.show_Y(), crossNormalised.show_Z());
-			triangleVertexCount++;
-		//if it is the second vertex
-		}else if(triangleVertexCount==1){
-			vec1 = arr[i-1].Pos - arr[i].Pos;// go back to origin
-			vec2 = arr[i + 2].Pos - arr[i].Pos;
-			Vector3D cross = vec1.cross_product(vec2);
-			Vector3D crossNormalised = cross.normalization();
-			//Upload normal data
-			tempVertexArr[i].Normal = XMFLOAT3(crossNormalised.show_X(), crossNormalised.show_Y(), crossNormalised.show_Z());
-			triangleVertexCount++;
-		}
-		//3rd vertex
-		else if (triangleVertexCount == 2) {
-			vec1 = arr[i - 1].Pos - arr[i].Pos;//go to orign of triangle
-			vec2 = arr[i - 2].Pos - arr[i].Pos;// go to previous vertex
-			Vector3D cross = vec1.cross_product(vec2);
-			Vector3D crossNormalised = cross.normalization();
-			//Upload normal data
-			tempVertexArr[i].Normal = XMFLOAT3(crossNormalised.show_X(), crossNormalised.show_Y(), crossNormalised.show_Z());
-
-			float sumOfX = tempVertexArr[i].Normal.x + tempVertexArr[i-1].Normal.x + tempVertexArr[i-2].Normal.x;
-			float sumOfY = tempVertexArr[i].Normal.y + tempVertexArr[i - 1].Normal.y+ tempVertexArr[i - 2].Normal.y;
-			float sumOfZ = tempVertexArr[i].Normal.z + tempVertexArr[i - 1].Normal.z +tempVertexArr[i - 2].Normal.z;
-
-			float  averageX = sumOfX / 3.0f;
-			float  averageY = sumOfY/ 3.0f;
-			float  averageZ = sumOfZ / 3.0f;
-
-			tempVertexArr[i - 2].Normal = XMFLOAT3(averageX, averageY, averageZ);
-			triangleVertexCount == 0;
-		}
-
-	}
-
-
-	
-
-
-}
 
 void Application::ToggleWireFrame()
 {
@@ -873,26 +858,31 @@ void Application::ToggleWireFrame()
 }
 
 
-void Application::InitCamera(Vector3D initPos, Vector3D lootAt, Vector3D up)
+Camera* Application::InitCamera(Vector3D initPos, Vector3D lookAt, Vector3D up)
 {
 	//Initialise a new camera
-	Camera* newCam = new Camera(initPos, lootAt, up,_WindowWidth,_WindowHeight,_NearDepth,_FarDepth);
+	Camera* newCam = new Camera(initPos, lookAt, up,_WindowWidth,_WindowHeight,_NearDepth,_FarDepth);
 	//Add to vector of camera;
 	cameras.push_back(newCam);
+	return newCam;
 }
-void Application::InitGameObject(Vector3D initPos, char* modelPath, ID3D11ShaderResourceView* texture)
+GameObject* Application::InitGameObject(Vector3D initPos, char* modelPath, ID3D11ShaderResourceView* texture)
 {
 	if (_pd3dDevice != NULL) {
 		GameObject* newGameObject = new GameObject(modelPath, initPos, _pd3dDevice, texture);
 		_gameObjects.push_back(newGameObject);
+		return newGameObject;
 	}
+	return nullptr;
 }
-void Application::InitPrimitiveGameObject(GameObjectPrimitives::PrimitiveType objectType, Vector3D initPos, ID3D11ShaderResourceView* texture)
+GameObjectPrimitives* Application::InitPrimitiveGameObject(GameObjectPrimitives::PrimitiveType objectType, Vector3D initPos, ID3D11ShaderResourceView* texture)
 {
 	if (_pd3dDevice != NULL) {
 		GameObjectPrimitives* newGameObject = new GameObjectPrimitives(objectType, initPos, _pd3dDevice, texture);
 		_gameObjects.push_back(newGameObject);
+		return newGameObject;
 	}
+	return nullptr;
 }
 void Application::DrawGameObjects(ID3D11DeviceContext* deviceContext, ConstantBuffer cb)
 {
@@ -960,6 +950,35 @@ void Application::SetActiveCamera(int index)
 	else {
 		activeCamIndex = 0;
 	}
+}
+
+
+
+void Application::CreateScene(std::string levelName)
+{
+	file<> sceneFile("LevelFiles/SceneData.xml");
+	xml_document<> doc;
+	doc.parse<0>(sceneFile.data());
+	if (sceneFile.size() == 0) {
+		return;
+	}
+
+	xml_node<>* scenesData = doc.first_node();
+	xml_node<>* scenesNode = scenesData->first_node();
+
+	assert(scenesNode->value()!= "scenes"); //no scenes found
+
+	xml_node<>* levelNode = FindChildNode(scenesNode, "levelScene", "level_name", levelName);
+	
+	if (levelNode != nullptr) {
+		std::string newLevelName = levelNode->first_attribute()->value();
+		SetWindowTextA(_hWnd, newLevelName.c_str());
+	}
+	CompileLevelData(levelNode);
+
+
+
+
 }
 
 Camera* Application::GetActiveCamera()

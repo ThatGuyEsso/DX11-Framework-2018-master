@@ -16,8 +16,10 @@ void GameObjectPrimitives::InitMesh(ID3D11Device* device)
 		CreateMeshData(CubeVertices3D, CubeVertexCount, CubeIndexCount, device, CubeIndices);
 		break;
 	case PrimitiveType::Plane:
+		CreateMeshData(PlaneVertices3D, PlaneVertexCount, PlaneIndexCount, device, PlaneIndicies);
 		break;
 	case PrimitiveType::Pyramid:
+		CreateMeshData(PyramidVertices3D, PyramidVertexCount, PyramidIndexCount, device, PyramindIndices);
 		break;
 	default:
 		break;

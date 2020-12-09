@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<sceneData version ="1.0">
+
+	<scenes version ="1.0">
+	
+		<levelScene level_name ="Demo" version ="1.1">
+	
+			<camera camName ="BirdCam"  xPos ="5.0"
+					yPos ="8.0" zPos ="5.0"xLookAt= "0.0"yLookAt= "0.0"zLookAt="0.0" xUp= "0.0"yUp="1.0"zUp="0.0">
+				<isLookingFoward bool ="false" />
+				<pathPoint xPos ="5.0" yPos ="8.0" zPos ="-5.0"/>
+				<pathPoint xPos ="-5.0" yPos ="8.0" zPos ="-5.0"/>
+				<pathPoint xPos ="-5.0" yPos ="8.0" zPos ="5.0"/>
+				<pathPoint xPos ="5.0" yPos ="8.0" zPos ="5.0"/>
+			</camera>
+			<showAstroids bool= "true"/>
+			<gameObject model= "Models/donut.obj" texturePath = "Assets/Textures/Crate_COLOR.dds" xPos= "0.0" yPos="0.0" zPos="0.0">
+				<scale xScale = "1.0"yScale="1.0" zScale="1.0"/>
+				<roation xRot = "0.0"yRot="0.2"zRot="0.0"/>
+			</gameObject>
+			
+			<primitiveObject type ="plane" texturePath = "Assets/Textures/asphalt.dds" xPos= "0.0" yPos="-3.0" zPos="0.0">
+				<scale xScale = "10.0"yScale="1.0" zScale="10.0"/>
+				<roation xRot = "0.0"yRot="0.0"zRot="0.0"/>
+			</primitiveObject>
+		
+		</levelScene>
+	
+		<levelScene level_name ="Space" version ="1.0"/>
+	
+	
+	
+	
+	</scenes>
+
+
+
+
+
+
+
+
+
+
+
+
+</sceneData>

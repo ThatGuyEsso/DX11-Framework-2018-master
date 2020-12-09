@@ -10,7 +10,10 @@ Camera::Camera(Vector3D position, Vector3D at, Vector3D up, float windowWidth, f
 	_windowHeight = windowHeight;
 	_nearDepth= nearDepth;
 	_farDepth=farDepth;
+	_rotation = Vector3D();
+	_forward = defForward;
 	_isLookingForward = false;
+	
 	SetForward(Vector3D (0.0f,0.0f,1.0f));
 
 
@@ -22,15 +25,22 @@ Camera::~Camera()
 //============Updaters=================
 void Camera::Update(float deltaTime)
 {	
+	
 	time = deltaTime;
 	//Set up temporary matrix to store current view matrix in XM format so Direct X operations can be run on it.
 	DirectX::XMFLOAT4X4 tempView;
 	DirectX::XMVECTOR Eye = DirectX::XMVectorSet(_eye.show_X(), _eye.show_Y(), _eye.show_Z(), 0.0f);
 	DirectX::XMVECTOR At = DirectX::XMVectorSet(_at.show_X(), _at.show_Y(), _at.show_Z(), 0.0f);
 	DirectX::XMVECTOR Up = DirectX::XMVectorSet(_up.show_X(), _up.show_Y(), _up.show_Z(), 0.0f);
-	DirectX::XMVECTOR forward = DirectX::XMVectorSet(_forward.show_X(), _forward.show_Y(), _forward.show_Z(), 0.0f);
+	DirectX::XMVECTOR defaultForward = DirectX::XMVectorSet(defForward.show_X(), defForward.show_Y(), defForward.show_Z(), 0.0f);
+	DirectX::XMVECTOR forward;
+	XMMATRIX rotDirection = XMMatrixRotationRollPitchYaw(_rotation.show_X(), _rotation.show_Y(), 0.0f);
+	forward = XMVector3TransformCoord(defaultForward, rotDirection);
 	//store new view matrix
 
+	if (followPath) {
+		FollowPath(time);
+	}
 	//Update transfomation matrix depending on the camera is looking at or to
 	if (_isLookingForward) {
 		XMStoreFloat4x4(&tempView, DirectX::XMMatrixLookToLH(Eye, forward, Up));
@@ -67,13 +77,18 @@ void Camera::Reshape(float windowWidth, float windowHeight, float nearDepth, flo
 	_nearDepth = nearDepth;
 	_farDepth = farDepth;
 }
-void Camera::SetRotationAmount(float newAmount)
+void Camera::SetRotationSpeed(float newAmount)
 {
-	_rotationAmount = newAmount;
+	_rotationSpeed = newAmount;
 }
 void Camera::SetLookForward(bool lookForward)
 {
 	_isLookingForward = lookForward;
+}
+Vector3D Camera::CalculateBezierPoint(float t, Vector3D p0, Vector3D p1, Vector3D p2, Vector3D p3)
+{
+
+	return Vector3D();
 }
 Matrix<float> Camera::ConvertToColumnVector(Vector3D vector)
 {
@@ -250,14 +265,14 @@ void Camera::RotateYAxis(bool rotateRight)
 
 		if (!_isLookingForward) {
 			
-			float rotDeg = _rotationAmount;
+			float rotDir =1.0f;
 			if (rotateRight) {
 				
-				rotDeg *= -1;
+				rotDir *= -1.0f;
 			
 			}
 			
-			SetPosition(CreateRotation(rotDeg *time, Vector3D(0.0f, 1.0f, 0.0f)));
+			SetPosition(CreateRotation(rotDir *time, Vector3D(0.0f, 1.0f, 0.0f)));
 		}
 	}
 }
@@ -268,16 +283,48 @@ void Camera::RotateXAxis(bool rotateUp)
 
 		if (!_isLookingForward) {
 
-			float rotDeg = _rotationAmount;
+			float rotDir = 1.0f;
 			if (!rotateUp) {
 
-				rotDeg *= -1;
+				rotDir *= -1.0f;
 
 			}
 
-			SetPosition(CreateRotation(rotDeg*time, Vector3D(1.0f, 0.0f, 0.0f)));
+			SetPosition(CreateRotation(rotDir *time, Vector3D(1.0f, 0.0f, 0.0f)));
 
 			
+		}
+	}
+}
+
+void Camera::adjustPitch(bool isLookingUp)
+{
+	if (_hasControl) {
+		if (_isLookingForward) {
+			float newPitch = 0;
+if (isLookingUp) {
+	newPitch = _rotation.show_X() + time * _rotationSpeed;
+}
+else {
+	newPitch = _rotation.show_X() - time * _rotationSpeed;
+}
+_rotation = Vector3D(newPitch, _rotation.show_Y(), _rotation.show_Z());
+		}
+	}
+}
+
+void Camera::adjustYaw(bool isLookingRight)
+{
+	if (_hasControl) {
+		if (_isLookingForward) {
+			float newYaw = 0;
+			if (isLookingRight) {
+				newYaw = _rotation.show_Y() + time * _rotationSpeed;
+			}
+			else {
+				newYaw = _rotation.show_Y() - time * _rotationSpeed;
+			}
+			_rotation = Vector3D(_rotation.show_X(), newYaw, _rotation.show_Z());
 		}
 	}
 }
@@ -287,11 +334,11 @@ void Camera::Strafe(bool strafeRight)
 	if (_hasControl) {
 		if (_isLookingForward) {
 			if (strafeRight) {
-				Vector3D moveDir = Vector3D(_eye.show_X() + _cameraStrafeAmount*time, _eye.show_Y(), _eye.show_Z());
+				Vector3D moveDir = Vector3D(_eye.show_X() + _cameraStrafeAmount * time, _eye.show_Y(), _eye.show_Z());
 				SetPosition(moveDir);
 			}
 			else {
-				Vector3D moveDir = Vector3D(_eye.show_X() - _cameraStrafeAmount*time, _eye.show_Y(), _eye.show_Z());
+				Vector3D moveDir = Vector3D(_eye.show_X() - _cameraStrafeAmount * time, _eye.show_Y(), _eye.show_Z());
 				SetPosition(moveDir);
 			}
 		}
@@ -303,11 +350,11 @@ void Camera::Move(bool moveForward)
 	if (_hasControl) {
 		if (_isLookingForward) {
 			if (moveForward) {
-				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y(), _eye.show_Z() + _cameraStrafeAmount*time);
+				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y(), _eye.show_Z() + _cameraStrafeAmount * time);
 				SetPosition(moveDir);
 			}
 			else {
-				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y(), _eye.show_Z() - _cameraStrafeAmount*time);
+				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y(), _eye.show_Z() - _cameraStrafeAmount * time);
 				SetPosition(moveDir);
 			}
 		}
@@ -318,15 +365,15 @@ void Camera::MoveOnY(bool up)
 {
 	if (_hasControl) {
 
-			
-			if (up) {
-				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y() + (time*_cameraVerticalMoveAmount), _eye.show_Z());
-				SetPosition(moveDir);
-			}
-			else {
-				Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y()- (time * _cameraVerticalMoveAmount), _eye.show_Z());
-				SetPosition(moveDir);
-			}
+
+		if (up) {
+			Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y() + (time * _cameraVerticalMoveAmount), _eye.show_Z());
+			SetPosition(moveDir);
+		}
+		else {
+			Vector3D moveDir = Vector3D(_eye.show_X(), _eye.show_Y() - (time * _cameraVerticalMoveAmount), _eye.show_Z());
+			SetPosition(moveDir);
+		}
 
 	}
 }
@@ -339,6 +386,65 @@ void Camera::SetLookAtGameObject(GameObject* target)
 void Camera::ToggleFollow(bool isFollowing)
 {
 	_isFollowCam = isFollowing;
+}
+
+void Camera::BeginFollowingPath()
+{
+	if (_hasControl&& !pathPoints.empty()) {
+		_hasControl = false;
+		followPath = true;
+
+	}
+}
+
+void Camera::SetPathSpeed(float newPathSpeed)
+{
+
+	pathSpeed = newPathSpeed;
+}
+
+void Camera::FollowPath(float t)
+{
+
+	Vector3D dir = pathPoints[currPathIndex] - _eye;
+	Vector3D dirNORM = dir.normalization();
+
+			
+		SetPosition(_eye + dirNORM* pathSpeed * time);
+
+	if (_eye.distance(pathPoints[currPathIndex]) < 0.05 && _eye.distance(pathPoints[currPathIndex]) > -0.05){
+		_eye = pathPoints[currPathIndex];
+		currPathIndex++;
+		if (currPathIndex >= pathPoints.size()) {
+			currPathIndex = 0;
+			StopFollowingPath();
+		}
+				
+	}
+	//if (timeToPathSpeedIncrease <= 0.0f) {
+	//	pathSpeed += pathSpeedIncrement;
+	//	float max = maxPathSpeed;
+	//	if (pathSpeed >(max))  pathSpeed = max;
+	//	timeToPathSpeedIncrease = pathSpeedIncreateRate;
+	//	
+	//}
+	//else {
+	//	timeToPathSpeedIncrease -= time;
+	//}
+
+	
+}
+
+void Camera::StopFollowingPath()
+{
+	_hasControl = true;
+	followPath = false;
+	pathSpeed = minPathSpeed;
+}
+
+void Camera::AddPathPoint(Vector3D newPoint)
+{
+	pathPoints.push_back(newPoint);
 }
 
 

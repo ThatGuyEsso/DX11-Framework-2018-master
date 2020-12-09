@@ -7,7 +7,7 @@
 
 //Defaults
 static const wchar_t* defaultTexturePath = L"Assets/Textures/Crate_COLOR.dds";
-
+//===================Primitive Shape VB/IB Data=================
 static UINT CubeIndexCount = 36;
 static UINT CubeVertexCount =8;
 static UINT PlaneIndexCount = 96;
@@ -49,7 +49,62 @@ static Vertex3D CubeVertices3D[] =
 	{Vector3D(-0.5f,-0.5f, -0.5f),DirectX::XMFLOAT2(0.0f,1.0f)},
 	{Vector3D(-0.5f,0.5f, -0.5f),DirectX::XMFLOAT2(0.0f,0.0f)}
 };
+static Vertex3D PyramidVertices3D[] =
+{
+	{Vector3D(0.0f, 0.5f, 0.0f), DirectX::XMFLOAT2(0.5f,0.5f)},
+	{Vector3D(0.5f, -0.5f,-0.5f),DirectX::XMFLOAT2(1.0f,1.0f)},
+	{Vector3D(-0.5f, -0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,1.0f)},
+	{Vector3D(0.5f, -0.5f,0.5f), DirectX::XMFLOAT2(1.0f,0.0f)},
+	{Vector3D(-0.5f, -0.5f,0.5f), DirectX::XMFLOAT2(0.0f,0.0f)}
+};
 
+static WORD PyramindIndices[] =
+{
+	0,1,2,
+	0,2,4,
+	4,3,0,
+	3,1,0,
+	2,3,4,
+	2,1,3
+
+};
+
+static Vertex3D PlaneVertices3D[] = 
+//first row
+{{ Vector3D(-0.4f, 0.0f, 0.4f), XMFLOAT2(0.0f, 0.0f )},
+{ Vector3D(-0.2f, 0.0f, 0.4f),XMFLOAT2(1.0f, 0.0f )},
+{ Vector3D(0.0f, 0.0f, 0.4f), XMFLOAT2(0.0f, 0.0f )},
+{ Vector3D(0.2f, 0.0f, 0.4f), XMFLOAT2(1.0f, 0.0f )},
+{ Vector3D(0.4f, 0.0f, 0.4f), XMFLOAT2(0.0f, 0.0f) },
+
+//second row
+{ Vector3D(-0.4f, 0.0f, 0.2f), XMFLOAT2(0.0f, 1.0f) },
+{ Vector3D(-0.2f, 0.0f, 0.2f),  XMFLOAT2(1.0f, 1.0f) },
+{ Vector3D(0.0f, 0.0f, 0.2f), XMFLOAT2(0.0f, 1.0f) },
+{ Vector3D(0.2f, 0.0f, 0.2f),  XMFLOAT2(1.0f, 1.0f) },
+{ Vector3D(0.4f, 0.0f, 0.2f),  XMFLOAT2(0.0f, 1.0f) },
+
+//Third row
+{ Vector3D(-0.4f, 0.0f, 0.0f), XMFLOAT2(0.0f, 0.0f) },
+{ Vector3D(-0.2f, 0.0f, 0.0f), XMFLOAT2(1.0f, 0.0f) },
+{ Vector3D(0.0f, 0.0f, 0.0f),  XMFLOAT2(0.0f, 0.0f) },
+{ Vector3D(0.2f, 0.0f, 0.0f),  XMFLOAT2(1.0f, 0.0f) },
+{ Vector3D(0.4f, 0.0f, 0.0f),  XMFLOAT2(0.0f, 0.0f) },
+
+//4th row
+{ Vector3D(-0.4f, 0.0f, -0.2f),  XMFLOAT2(0.0f, 1.0f) },
+{ Vector3D(-0.2f, 0.0f, -0.2f),  XMFLOAT2(1.0f, 1.0f) },
+{ Vector3D(0.0f, 0.0f, -0.2f),  XMFLOAT2(0.0f, 1.0f) },
+{ Vector3D(0.2f, 0.0f, -0.2f),  XMFLOAT2(1.0f, 1.0f) },
+{ Vector3D(0.4f, 0.0f, -0.2f),  XMFLOAT2(0.0f, 1.0f) },
+
+//5th row
+{ Vector3D(-0.4f, 0.0f,-0.4f),  XMFLOAT2(0.0f, 0.0f) },
+{ Vector3D(-0.2f, 0.0f, -0.4f), XMFLOAT2(1.0f, 0.0f) },
+{ Vector3D(0.0f, 0.0f, -0.4f),  XMFLOAT2(0.0f,0.0f) },
+{ Vector3D(0.2f, 0.0f, -0.4f), XMFLOAT2(1.0f, 0.0f) },
+{ Vector3D(0.4f, 0.0f, -0.4f),  XMFLOAT2(0.0f, 0.0f) },
+};
 static WORD PlaneIndicies[] =
 {
 	// row	1
@@ -108,4 +163,5 @@ static WORD PlaneIndicies[] =
 			24,23,18//31
 
 };
+//===================End Primitive Shape VB/IB Data=================
 #endif
