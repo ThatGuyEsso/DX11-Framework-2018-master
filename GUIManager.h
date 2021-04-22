@@ -9,4 +9,6 @@ public:
 	~GUIManager();
 	void Init(void* hWnd, ID3D11Device* device, ID3D11DeviceContext* pDeviceContext);
 	void DrawGUI();
+
+	bool IsGuiTyping() { return ImGui::GetIO().WantCaptureKeyboard; }
 };

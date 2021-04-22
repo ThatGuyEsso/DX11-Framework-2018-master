@@ -1,0 +1,673 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="vector of type float">
+    <Position X="12.306" Y="6.559" Height="0.291" Width="1.406" />
+  </Comment>
+  <Comment CommentText="vector of type camera pointer">
+    <Position X="12.332" Y="8.468" Height="0.456" Width="1.582" />
+  </Comment>
+  <Comment CommentText="vector of type GameObjectLight pointer">
+    <Position X="12.311" Y="10.436" Height="0.491" Width="1.665" />
+  </Comment>
+  <Comment CommentText="vector of type GameObject pointer">
+    <Position X="12.185" Y="11.392" Height="0.491" Width="1.665" />
+  </Comment>
+  <Comment CommentText="vector of type float">
+    <Position X="12.461" Y="12.5" Height="0.291" Width="1.406" />
+  </Comment>
+  <Comment CommentText="vector of type GameObject pointer">
+    <Position X="12.245" Y="14.214" Height="0.491" Width="1.665" />
+  </Comment>
+  <Comment CommentText="vector of type float">
+    <Position X="12.508" Y="15.944" Height="0.291" Width="1.406" />
+  </Comment>
+  <Comment CommentText="vector of type Vector3D pointer">
+    <Position X="16.699" Y="11.02" Height="0.491" Width="1.665" />
+  </Comment>
+  <Class Name="Camera">
+    <Position X="29.5" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Camera::CameraMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Camera.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <AssociationLine Name="_projection" Type="Matrix&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="31" Y="4.816" />
+        <Point X="31.408" Y="4.816" />
+        <Point X="31.408" Y="5.312" />
+        <Point X="32.935" Y="5.312" Type="JumpStart" />
+        <Point X="33.101" Y="5.312" Type="JumpEnd" />
+        <Point X="35.562" Y="5.312" />
+        <Point X="35.562" Y="5.062" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.464" Y="0.007" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_forward" Type="Vector3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="29.844" Y="4" />
+        <Point X="29.844" Y="2.7" />
+        <Point X="26.375" Y="2.7" />
+        <Point X="26.375" Y="1.812" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.566" Y="0.68" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_rotation" Type="Vector3D">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.87" Y="0.051" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_right" Type="Vector3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="29.641" Y="4" />
+        <Point X="29.641" Y="3.083" />
+        <Point X="26.062" Y="3.083" />
+        <Point X="26.062" Y="1.812" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IDQjQQIAMqAQQOi6UEAGZMJO5BgJJ4QCpCshlEoiUQQ=</HashCode>
+      <FileName>Camera.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_projection" />
+      <Field Name="_view" />
+      <Field Name="_eye" />
+      <Field Name="_forward" />
+      <Field Name="_rotation" />
+      <Field Name="_right" />
+      <Field Name="_up" />
+      <Field Name="pathPoints" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="GameObject">
+    <Position X="20" Y="4.25" Width="2.75" />
+    <AssociationLine Name="_Position" Type="Vector3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="21.375" Y="4.25" />
+        <Point X="21.375" Y="1.562" />
+        <Point X="25" Y="1.562" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_Scale" Type="Vector3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="22.094" Y="4.25" />
+        <Point X="22.094" Y="2.877" />
+        <Point X="22.917" Y="2.877" Type="JumpStart" />
+        <Point X="23.083" Y="2.877" Type="JumpEnd" />
+        <Point X="23.294" Y="2.877" Type="JumpStart" />
+        <Point X="23.464" Y="2.877" Type="JumpEnd" />
+        <Point X="25.125" Y="2.877" />
+        <Point X="25.125" Y="1.812" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_Rotation" Type="Vector3D">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.852" Y="0.015" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>ABQAQEACGKmREgAyCAAAgAIAAAAAAggkACACAgIAAoA=</HashCode>
+      <FileName>GameObject.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_Position" />
+      <Field Name="_Scale" />
+      <Field Name="_Rotation" />
+      <Field Name="_Material" />
+      <Field Name="_ObjectModel" />
+      <Field Name="_pTextureRV" />
+      <Field Name="_OWorld" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Application">
+    <Position X="9.5" Y="3.5" Width="1.5" />
+    <AssociationLine Name="_depthStencilView" Type="ID3D11DepthStencilView" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="9.5" Y="3.609" />
+        <Point X="9.125" Y="3.609" />
+        <Point X="9.125" Y="3.469" />
+        <Point X="6.5" Y="3.469" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_hWnd" Type="HWND" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="9.5" Y="12.024" />
+        <Point X="9.125" Y="12.024" />
+        <Point X="9.125" Y="13.423" />
+        <Point X="5" Y="13.423" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_pConstantBuffer" Type="ID3D11Buffer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11" Y="3.664" />
+        <Point X="11.375" Y="3.664" />
+        <Point X="11.375" Y="1.596" />
+        <Point X="16" Y="1.596" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_pDefaultTextureRV" Type="ID3D11ShaderResourceView" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.795" Y="3.5" />
+        <Point X="10.795" Y="3.125" />
+        <Point X="11.292" Y="3.125" Type="JumpStart" />
+        <Point X="11.458" Y="3.125" Type="JumpEnd" />
+        <Point X="18.625" Y="3.125" />
+        <Point X="18.625" Y="5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.024" Y="1.162" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_pd3dDevice" Type="ID3D11Device" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="9.5" Y="4.657" />
+        <Point X="9.125" Y="4.657" />
+        <Point X="9.125" Y="4.596" />
+        <Point X="5.25" Y="4.596" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_pSwapChain" Type="IDXGISwapChain" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.188" Y="3.5" />
+        <Point X="10.188" Y="1.143" />
+        <Point X="6.5" Y="1.143" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_pTextureRV" Type="ID3D11ShaderResourceView" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10" Y="3.5" />
+        <Point X="10" Y="3.125" />
+        <Point X="10.104" Y="3.125" Type="JumpStart" />
+        <Point X="10.271" Y="3.125" Type="JumpEnd" />
+        <Point X="10.408" Y="3.125" Type="JumpStart" />
+        <Point X="10.575" Y="3.125" Type="JumpEnd" />
+        <Point X="11.292" Y="3.125" Type="JumpStart" />
+        <Point X="11.458" Y="3.125" Type="JumpEnd" />
+        <Point X="16.608" Y="3.125" />
+        <Point X="16.608" Y="5.375" />
+        <Point X="17.25" Y="5.375" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.665" Y="0.778" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>+ueoICMAil6QR5iANR1EQMEoDCATAouMACBpcELAQEc=</HashCode>
+      <FileName>Application.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="directionalLight" />
+      <Field Name="cameras" />
+      <Field Name="_guiManager" />
+      <Field Name="_input" />
+      <Field Name="_astroidScales" />
+      <Field Name="_astroidOffset" />
+      <Field Name="_astroidRotationSpeedScalar" />
+      <Field Name="_depthStencilBuffer" />
+      <Field Name="_driverType" />
+      <Field Name="_depthStencilView" />
+      <Field Name="_gameObjects" />
+      <Field Name="_featureLevel" />
+      <Field Name="_hWnd" />
+      <Field Name="_hInst" />
+      <Field Name="_lights" />
+      <Field Name="_pConstantBuffer" />
+      <Field Name="_pDefaultTextureRV" />
+      <Field Name="_pd3dDevice" />
+      <Field Name="_pImmediateContext" />
+      <Field Name="_pPixelShader" />
+      <Field Name="_pRenderTargetView" />
+      <Field Name="_pSamplerLinear" />
+      <Field Name="_pSwapChain" />
+      <Field Name="_pTextureRV" />
+      <Field Name="_solidMode" />
+      <Field Name="_pVertexLayout" />
+      <Field Name="_world" />
+      <Field Name="_pVertexShader" />
+      <Field Name="_wireFrame" />
+      <Field Name="_astroids" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="GameObjectDirectionalLight">
+    <Position X="20.25" Y="17.25" Width="2.5" />
+    <AssociationLine Name="lightDirection" Type="Vector3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="20.875" Y="17.25" />
+        <Point X="20.875" Y="10.863" />
+        <Point X="21.292" Y="10.863" Type="JumpStart" />
+        <Point X="21.458" Y="10.863" Type="JumpEnd" />
+        <Point X="23" Y="10.863" />
+        <Point X="23" Y="2.187" />
+        <Point X="23.294" Y="2.187" Type="JumpStart" />
+        <Point X="23.461" Y="2.187" Type="JumpEnd" />
+        <Point X="25.042" Y="2.187" Type="JumpStart" />
+        <Point X="25.208" Y="2.187" Type="JumpEnd" />
+        <Point X="25.812" Y="2.187" />
+        <Point X="25.812" Y="1.812" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.107" Y="0.599" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAQAAAAAgAAAAASQAAAAAA=</HashCode>
+      <FileName>GameObjectDirectionalLight.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="lightDirection" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="std::vector&lt;_Ty, _Alloc&gt;">
+    <Position X="14" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AWAEk4EqCrBsCEBAAOMIIAAyAAUEQBIghQkwgkAFUko=</HashCode>
+      <FileName>C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\vector</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameObjectPrimitives">
+    <Position X="16" Y="13" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="GameObjectPrimitives::PrimitiveType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>GameObjectPrimitives.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAgAAAAAAAAAACAAAAAAAAAAAAAAAAAAABBA=</HashCode>
+      <FileName>GameObjectPrimitives.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameObjectLight">
+    <Position X="22.25" Y="13" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAABAAAAABAAAAAAAAAAAAAQQAAGBAAAAQA=</HashCode>
+      <FileName>GameObjectLight.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="lightData" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="GameObjectPointLight">
+    <Position X="23.75" Y="16.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAoAAAAAgAAAAAAAAQAIBAAAAAAAAAAAA=</HashCode>
+      <FileName>GameObjectPointLight.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="pointLightData" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="GUIManager">
+    <Position X="5" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAAEAAAAACAAAAQAA=</HashCode>
+      <FileName>GUIManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InputManager">
+    <Position X="5.5" Y="8.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAIAAAAAAAAAAQAAABAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>InputManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Matrix&lt;T&gt;" Collapsed="true">
+    <Position X="35" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEgAAAAAACAAAEIBAAQAgAACgAAAACgAgAAAAAAA=</HashCode>
+      <FileName>Matrix.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vector3D" Collapsed="true">
+    <Position X="25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAACAAAAAAIAQAAAEgQAAAAAQBgEQAAIAA=</HashCode>
+      <FileName>Vector3D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Vertex3D">
+    <Position X="25.25" Y="23" Width="1.5" />
+    <AssociationLine Name="Pos" Type="Vector3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="26.75" Y="23.562" />
+        <Point X="33.018" Y="23.562" />
+        <Point X="33.018" Y="0.875" />
+        <Point X="25.812" Y="0.875" />
+        <Point X="25.812" Y="1.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Structs.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="UV" />
+      <Field Name="Pos" />
+    </ShowAsAssociation>
+  </Struct>
+  <Struct Name="Vertex">
+    <Position X="17.25" Y="19" Width="1.5" />
+    <AssociationLine Name="Normal" Type="DirectX::XMFLOAT3" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="18" Y="20.103" />
+        <Point X="18" Y="22.625" />
+        <Point X="20.5" Y="22.625" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Pos" Type="DirectX::XMFLOAT3" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="17.594" Y="20.103" />
+        <Point X="17.594" Y="23" />
+        <Point X="20.5" Y="23" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACIAAAAAAAgAABAAAA=</HashCode>
+      <FileName>Structs.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Normal" />
+      <Field Name="TexC" />
+      <Field Name="Pos" />
+    </ShowAsAssociation>
+  </Struct>
+  <Struct Name="ConstantBuffer">
+    <Position X="14" Y="22" Width="1.5" />
+    <AssociationLine Name="AmbientMtrl" Type="DirectX::XMFLOAT4" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.156" Y="23.296" />
+        <Point X="15.156" Y="24.495" />
+        <Point X="19.375" Y="24.495" />
+        <Point X="19.375" Y="25.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.078" Y="0.448" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="DiffuseMtrl" Type="DirectX::XMFLOAT4" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.293" Y="23.296" />
+        <Point X="14.293" Y="26.187" />
+        <Point X="19.625" Y="26.187" />
+        <Point X="19.625" Y="25.812" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="DiffuseLight" Type="DirectX::XMFLOAT4" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.359" Y="23.296" />
+        <Point X="15.359" Y="23.671" />
+        <Point X="19.625" Y="23.671" />
+        <Point X="19.625" Y="25.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.119" Y="1.03" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="SpecularLight" Type="DirectX::XMFLOAT4" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.902" Y="23.296" />
+        <Point X="14.902" Y="24.856" />
+        <Point X="18.5" Y="24.856" />
+        <Point X="18.5" Y="25.25" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="SpecularMtrl" Type="DirectX::XMFLOAT4" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.471" Y="23.296" />
+        <Point X="14.471" Y="25.903" />
+        <Point X="18.438" Y="25.903" />
+        <Point X="18.438" Y="25.812" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.46" Y="-0.121" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QEAAgIAAYQAAAAAAAQAAAAAAAAAAAAAAACAAADQBAAA=</HashCode>
+      <FileName>Structs.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="AmbientCol" />
+      <Field Name="AmbientMtrl" />
+      <Field Name="DiffuseMtrl" />
+      <Field Name="DiffuseLight" />
+      <Field Name="mWorld" />
+      <Field Name="EyePosW" />
+      <Field Name="LightVecW" />
+      <Field Name="mView" />
+      <Field Name="mProjection" />
+      <Field Name="SpecularLight" />
+      <Field Name="SpecularMtrl" />
+    </ShowAsAssociation>
+  </Struct>
+  <Struct Name="BaseLightData" Collapsed="true">
+    <Position X="27.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAgAAAAAgAAAAAAAAAAAAAABAAAAEAAAAA=</HashCode>
+      <FileName>Structs.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="PointLight" Collapsed="true">
+    <Position X="24.5" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAACgAAAgAAIAAAAACAAAAAAAAAIEAAAAA=</HashCode>
+      <FileName>LightHelper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Material" Collapsed="true">
+    <Position X="24.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAKAAAAAAAAA=</HashCode>
+      <FileName>Structs.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MeshData">
+    <Position X="24.75" Y="5" Width="1.5" />
+    <AssociationLine Name="IndexBuffer" Type="ID3D11Buffer" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="24.75" Y="5.221" />
+        <Point X="23.377" Y="5.221" />
+        <Point X="23.377" Y="1.908" />
+        <Point X="21.458" Y="1.908" Type="JumpStart" />
+        <Point X="21.292" Y="1.908" Type="JumpEnd" />
+        <Point X="20.74" Y="1.908" Type="JumpStart" />
+        <Point X="20.573" Y="1.908" Type="JumpEnd" />
+        <Point X="19.524" Y="1.908" Type="JumpStart" />
+        <Point X="19.357" Y="1.908" Type="JumpEnd" />
+        <Point X="17.5" Y="1.908" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="VertexBuffer" Type="ID3D11Buffer" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="24.844" Y="5" />
+        <Point X="24.844" Y="5.24" />
+        <Point X="23.381" Y="5.24" />
+        <Point X="23.381" Y="2.208" />
+        <Point X="21.458" Y="2.208" Type="JumpStart" />
+        <Point X="21.292" Y="2.208" Type="JumpEnd" />
+        <Point X="20.74" Y="2.208" Type="JumpStart" />
+        <Point X="20.573" Y="2.208" Type="JumpEnd" />
+        <Point X="19.441" Y="2.208" />
+        <Point X="19.441" Y="1.562" />
+        <Point X="17.5" Y="1.562" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAEAAAAQAAIAAAAAAAAAAAEAA=</HashCode>
+      <FileName>OBJLoader.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="IndexBuffer" />
+      <Field Name="VertexBuffer" />
+    </ShowAsAssociation>
+  </Struct>
+  <Struct Name="ID3D11Texture2D" Collapsed="true">
+    <Position X="16.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3d11.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ID3D11DepthStencilView" Collapsed="true">
+    <Position X="5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3d11.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ID3D11Buffer" Collapsed="true">
+    <Position X="16" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3d11.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ID3D11ShaderResourceView" Collapsed="true">
+    <Position X="17.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3d11.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ID3D11Device" Collapsed="true">
+    <Position X="3.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAKCQAWUJCAUBCgAQIgCAICADIADAEBAAIUgCKAE=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3d11.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ID3D11DeviceContext" Collapsed="true">
+    <Position X="3.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>NAoqAQVCNBBgShQpQSQEEUgAIiACMCEABgLGoAqLAUQ=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3d11.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ID3D11PixelShader" Collapsed="true">
+    <Position X="3.75" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3d11.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ID3D11RenderTargetView" Collapsed="true">
+    <Position X="5.25" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3d11.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ID3D11SamplerState" Collapsed="true">
+    <Position X="2.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3d11.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IDXGISwapChain" Collapsed="true">
+    <Position X="5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAEBBAAAAgAIAAACAgAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\dxgi.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ID3D11RasterizerState" Collapsed="true">
+    <Position X="2.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3d11.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ID3D11InputLayout" Collapsed="true">
+    <Position X="5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3d11.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DirectX::XMFLOAT4X4" Collapsed="true">
+    <Position X="18" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\DirectXMath.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ID3D11VertexShader" Collapsed="true">
+    <Position X="5.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3d11.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DirectX::XMFLOAT3" Collapsed="true">
+    <Position X="20.5" Y="22.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAABgAQAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\DirectXMath.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DirectX::XMFLOAT2" Collapsed="true">
+    <Position X="20.25" Y="21.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAABAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\DirectXMath.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DirectX::XMFLOAT4" Collapsed="true">
+    <Position X="18.25" Y="25.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAhgAQAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\DirectXMath.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DirectX::XMMATRIX" Collapsed="true">
+    <Position X="10.25" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAQACAAAAAAAAAAAhAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\DirectXMath.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="HWND" Collapsed="true">
+    <Position X="3.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\wtypes.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="HINSTANCE" Collapsed="true">
+    <Position X="12.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\wtypes.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Enum Name="D3D_DRIVER_TYPE" Collapsed="true">
+    <Position X="4.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAIAAAAAAAAABBAIAIA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3dcommon.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="D3D_FEATURE_LEVEL" Collapsed="true">
+    <Position X="4" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAwAAAAADAAAAAAAAAMAAACQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\d3dcommon.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

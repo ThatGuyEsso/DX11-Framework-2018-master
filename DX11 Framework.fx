@@ -33,13 +33,17 @@ cbuffer ConstantBuffer : register(b0)
 
 };
 
-//cbuffer cbPerFrane {
-//	DirectionalLight gDirLight;
-//	PointLight gPointLight;
-//	SpotLight gSpotLight;
-//	float gEyePosW;
-//};
+//not currently in use
+struct PointLight {
 
+	float3 dir;
+	float3 pos;
+	float  range;
+	float3 att;
+	float4 ambient;
+	float4 diffuse;
+	
+};
 
 //--------------------------------------------------------------------------------------
 struct VS_OUTPUT
@@ -57,20 +61,23 @@ struct VS_OUTPUT
 VS_OUTPUT VS(float4 Pos : POSITION, float3 NormalL : NORMAL, float2 Tex : TEXCOORD0)
 {
 	VS_OUTPUT output = (VS_OUTPUT)0;
-
+	//vertex position
 	output.Pos = mul(Pos, mWorld);
+	//return output position
 	output.PosW = output.Pos;
-	////Compute specular
+
 	float3 toEye = normalize(EyePosW - output.Pos.xyz); // Compute the vector from the vertex to the eye position.
 
 	output.Pos = mul(output.Pos, mView);
 	output.Pos = mul(output.Pos, mProjection);
 	
-	output.TexC = Tex;
+	output.TexC = Tex;//return tex coordinate
+	//return vertex normal
 	float3 normalW = mul(float4(NormalL, 0.0f), mWorld).xyz;
 	normalW = normalize(normalW);
 	output.Norm = normalW;
 
+	//return vertex data
 	return output;
 }
 
@@ -86,25 +93,23 @@ float4 PS(VS_OUTPUT input) : SV_Target
 	float3 toEye = normalize(EyePosW - input.Pos.xyz); // Compute the vector from the vertex to the eye position.
 	// Compute the reflection vector.
 
-	////initialise lighting terms
-	//ambient = float4(0.0f, 0.0f, 0.0f, 0.0f);
-	//diffuse = float4(0.0f, 0.0f, 0.0f, 0.0f);
-	//spec = float4(0.0f, 0.0f, 0.0f, 0.0f);
-	//ComputeDirectionalLight(DiffuseMtrl,)
 	float3 r = reflect(-LightVecW, input.Norm);
-
 
 	// Determine how much (if any) specular light makes it
 	// into the eye.
 	float specularAmount = pow(max(dot(r, toEye), 0.0f), SpecularPower);
 	float3 specular = specularAmount * (SpecularMtrl * SpecularLight).rgb;
 	// Compute Colour using Diffuse lighting only
-	float diffuseAmount = max(dot(LightVecW, input.Norm), 0.0f);
+	float diffuseAmount = max(dot(LightVecW, input.Norm), 0.0f)*(DiffuseMtrl * DiffuseLight);
 	//Compute ambient
 	float ambient = (AmbientMtrl * ambientCol).rgb;
 	
-	float4 textureColour = txDiffuse.Sample(samLinear, input.TexC);
-	float4 col;
-	col = float4(textureColour+/*specular*/ /*+*/ /*ambient*/ + diffuseAmount * (DiffuseMtrl * DiffuseLight).rgb, DiffuseMtrl.a);
+	//add all lighting models
+	float appliedLight = ambient + diffuseAmount + specular;
+	//create texutre
+	float3 textureColour = txDiffuse.Sample(samLinear, input.TexC);
+	float4 col;//colour of pixel
+	//multiply pixel colour with texture colour
+	col = float4(textureColour* appliedLight, DiffuseMtrl.a);
     return col;
 }

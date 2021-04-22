@@ -7,7 +7,7 @@ ID3D11Device* device, ID3D11ShaderResourceView* texture):GameObject("",initialPo
 	InitMesh(device);
 }
 
-
+//evaluate init mesh toinitialise depending on type
 void GameObjectPrimitives::InitMesh(ID3D11Device* device)
 {
 	switch (gameObjectType)

@@ -6,31 +6,79 @@
 	
 		<levelScene level_name ="Demo" version ="1.1">
 	
-			<camera camName ="BirdCam"  xPos ="5.0"
-					yPos ="8.0" zPos ="5.0"xLookAt= "0.0"yLookAt= "0.0"zLookAt="0.0" xUp= "0.0"yUp="1.0"zUp="0.0">
-				<isLookingFoward bool ="false" />
+			<camera camName ="BirdCam"  xPos ="5.0" yPos ="8.0" zPos ="5.0" xLookAt= "0.0" yLookAt= "0.0" zLookAt="0.0" xUp= "0.0"yUp="1.0"zUp="0.0">
+				<CameraMode mode ="p" />
 				<pathPoint xPos ="5.0" yPos ="8.0" zPos ="-5.0"/>
 				<pathPoint xPos ="-5.0" yPos ="8.0" zPos ="-5.0"/>
 				<pathPoint xPos ="-5.0" yPos ="8.0" zPos ="5.0"/>
 				<pathPoint xPos ="5.0" yPos ="8.0" zPos ="5.0"/>
 			</camera>
-			<showAstroids bool= "true"/>
-			<gameObject model= "Models/donut.obj" texturePath = "Assets/Textures/Crate_COLOR.dds" xPos= "0.0" yPos="0.0" zPos="0.0">
+
+      <camera camName ="FrontCamera"  xPos ="0.0"
+				yPos ="0.0" zPos ="-5.0" xLookAt= "0.0" yLookAt= "0.0" zLookAt="0.0" xUp= "0.0"yUp="1.0"zUp="0.0">
+				<CameraMode mode ="fp" />
+
+      </camera>
+			<showAstroids bool= "false"/>
+			<gameObject model= "Models/cube.obj" texturePath = "Assets/Textures/Crate_COLOR.dds" xPos= "0.0" yPos="0.0" zPos="0.0">
 				<scale xScale = "1.0"yScale="1.0" zScale="1.0"/>
-				<roation xRot = "0.0"yRot="0.2"zRot="0.0"/>
+				<roation xRot = "0.0"yRot="0.0"zRot="0.0"/>
+			</gameObject>
+      	<gameObject model= "Models/sphere.obj" texturePath = "Assets/Textures/2k_jupiter.dds" xPos= "3.0" yPos="0.0" zPos="3.0">
+				<scale xScale = "1.0"yScale="1.0" zScale="1.0"/>
+				<roation xRot = "0.0"yRot="0.0"zRot="0.0"/>
+			</gameObject>
+     
+      	<gameObject model= "Models/cylinder.obj" texturePath = "Assets/Textures/asphalt.dds" xPos= "-3.0" yPos="0.0" zPos="-3.0">
+				<scale xScale = "1.0"yScale="2.0" zScale="1.0"/>
+				<roation xRot = "0.0"yRot="0.0"zRot="0.0"/>
 			</gameObject>
 			
-			<primitiveObject type ="plane" texturePath = "Assets/Textures/asphalt.dds" xPos= "0.0" yPos="-3.0" zPos="0.0">
-				<scale xScale = "10.0"yScale="1.0" zScale="10.0"/>
+			
+			<primitiveObject type ="plane" texturePath = "Assets/Textures/porceleanFloor.dds" xPos= "0.0" yPos="-1.0" zPos="0.0">
+				<scale xScale = "20.0"yScale="1.0" zScale="20.0"/>
 				<roation xRot = "0.0"yRot="0.0"zRot="0.0"/>
 			</primitiveObject>
 		
 		</levelScene>
 	
-		<levelScene level_name ="Space" version ="1.0"/>
+		<levelScene level_name ="Space" version ="1.1">
+      
+			<camera camName ="BirdCam"  xPos ="1.0"
+						yPos ="100.0" zPos ="1.0"xLookAt= "0.0"yLookAt= "0.0"zLookAt="0.0" xUp= "0.0"yUp="1.0"zUp="0.0">
+					<CameraMode mode ="p" />
+				</camera>
+    
+					<camera camName ="FrogCam"  xPos ="10.0"
+						yPos ="-10.0" zPos ="-30.0"xLookAt= "0.0"yLookAt= "0.0"zLookAt="0.0" xUp= "0.0"yUp="1.0"zUp="0.0">
+						<CameraMode mode ="p" />
+				</camera>
+			<gameObject model= "Models/sphere.obj" texturePath = "Assets/Textures/2k_sun_1.dds" xPos= "0.0" yPos="0.0" zPos="0.0">
+				<scale xScale = "12.0"yScale="12.0" zScale="12.0"/>
+				<roation xRot = "0.0"yRot="0.0"zRot="0.0"/>
+				<orbit orbitSpeed ="0.0f" rotSpeed =" 1.2"/>
+			</gameObject>
+      <gameObject model= "Models/sphere.obj" texturePath = "Assets/Textures/2k_venus_atmosphere.dds" xPos= "20.0" yPos="0.0" zPos="0.0">
+				<scale xScale = "5.0"yScale="5.0" zScale="5.0"/>
+				<roation xRot = "0.0"yRot="0.0"zRot="0.0"/>
+      	<orbit orbitSpeed ="5.0" rotSpeed =" -8.0"/>
+      
+      	</gameObject>
+      <gameObject model= "Models/sphere.obj" texturePath = "Assets/Textures/2k_mars.dds" xPos= "-40.0" yPos="0.0" zPos="0.0">
+				<scale xScale = "7.0"yScale="7.0" zScale="7.0"/>
+				<roation xRot = "0.0"yRot="0.0"zRot="0.0"/>
+        <orbit orbitSpeed ="2.0" rotSpeed =" -4.0"/>
+			</gameObject>
+      
+      <gameObject model= "Models/sphere.obj" texturePath = "Assets/Textures/2k_jupiter.dds" xPos= "0.0" yPos="0.0" zPos="80.0">
+				<scale xScale = "10.0"yScale="10.0" zScale="10.0"/>
+				<roation xRot = "0.0"yRot="0.0"zRot="0.0"/>
+				<orbit orbitSpeed ="1.5" rotSpeed =" -2.8"/>
+			</gameObject>
+      <showAstroids bool= "true"/>
 	
-	
-	
+			
+		</levelScene>
 	
 	</scenes>
 

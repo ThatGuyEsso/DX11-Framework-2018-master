@@ -18,20 +18,20 @@
     <Filter Include="Vendors\rapidXML">
       <UniqueIdentifier>{3f01036d-c641-45cd-ad0f-4e114461551f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{77ab4d78-6903-4061-bfdb-06cd604e160f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{da9439ba-b57d-4f8b-95eb-a5de66b95825}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects">
+      <UniqueIdentifier>{d2d6e59d-581a-4ccc-900d-330a8599f628}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{de9a0ad0-9ec2-4427-8176-78c9dc1800cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="Vector3D.h" />
-    <ClInclude Include="Matrix.h" />
-    <ClInclude Include="DDSTextureLoader.h" />
-    <ClInclude Include="OBJLoader.h" />
-    <ClInclude Include="Structs.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="LightHelper.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Commons.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GameObjectPrimitives.h" />
     <ClInclude Include="vendor\imgui\imgui.h">
       <Filter>Vendors\imgui</Filter>
     </ClInclude>
@@ -62,25 +62,59 @@
     <ClInclude Include="rapidxml_utils.hpp">
       <Filter>Vendors\rapidXML</Filter>
     </ClInclude>
-    <ClInclude Include="GUIManager.h" />
     <ClInclude Include="vendor\imgui\imgui_impl_dx11.h">
       <Filter>Vendors\imgui</Filter>
     </ClInclude>
     <ClInclude Include="vendor\imgui\imgui_impl_win32.h">
       <Filter>Vendors\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectPrimitives.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="OBJLoader.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3D.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="DDSTextureLoader.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectLight.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Commons.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectDirectionalLight.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectPointLight.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="DX11 Framework.cpp" />
-    <ClCompile Include="Vector3D.cpp" />
-    <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="DDSTextureLoader.cpp" />
-    <ClCompile Include="OBJLoader.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameObjectPrimitives.cpp" />
     <ClCompile Include="vendor\imgui\imgui.cpp">
       <Filter>Vendors\imgui</Filter>
     </ClCompile>
@@ -96,12 +130,53 @@
     <ClCompile Include="vendor\imgui\imgui_widgets.cpp">
       <Filter>Vendors\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="vendor\imgui\imgui_impl_dx11.cpp">
       <Filter>Vendors\imgui</Filter>
     </ClCompile>
     <ClCompile Include="vendor\imgui\imgui_impl_win32.cpp">
       <Filter>Vendors\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectPrimitives.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="OBJLoader.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3D.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="DDSTextureLoader.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectLight.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectDirectionalLight.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectPointLight.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11 Framework.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +188,7 @@
     <None Include="DX11 Framework.fx">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="DXframework.cd" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DX11 Framework.rc">

@@ -21,17 +21,11 @@ struct Vertex
 	};
 };
 
-struct Material {
-	XMFLOAT4 Ambient;
-	XMFLOAT4 Diffuse;
-	XMFLOAT4 Specular;
-};
-
-struct SimpleVertex
-{
-	XMFLOAT3 Pos;
-	XMFLOAT4 Colour;
-};
+//struct SimpleVertex
+//{
+//	XMFLOAT3 Pos;
+//	XMFLOAT4 Colour;
+//};
 
 struct ConstantBuffer
 {
@@ -48,4 +42,38 @@ struct ConstantBuffer
 	XMFLOAT4 AmbientCol;
 	XMFLOAT3 EyePosW;
 	float gTime;
+};
+
+struct BaseLightData {
+	BaseLightData() { ZeroMemory(this, sizeof(this)); }
+	DirectX::XMFLOAT4 Ambient;
+	DirectX::XMFLOAT4 Diffuse;
+	DirectX::XMFLOAT4 Specular;
+	float specularPower;
+
+	//Struct constructor
+	BaseLightData(DirectX::XMFLOAT4 initAmbient,DirectX::XMFLOAT4 initDiffuse, DirectX::XMFLOAT4 initSpecular,float initSpecularPower) {
+		Ambient = initAmbient;
+		Diffuse = initDiffuse;
+		Specular = initSpecular;
+		specularPower = initSpecularPower;
+	}
+};
+
+struct PointLight {
+	PointLight() { ZeroMemory(this, sizeof(this)); }
+	DirectX::XMFLOAT3 Att;
+	float Range;
+	PointLight(XMFLOAT3 attenuation, float initRange) {
+		Att = attenuation;
+		Range= initRange;
+	}
+
+
+};
+
+struct Material {
+	DirectX::XMFLOAT4 diffuseMaterial;
+	DirectX::XMFLOAT4 ambientMaterial;
+	DirectX::XMFLOAT4 specularMat;
 };

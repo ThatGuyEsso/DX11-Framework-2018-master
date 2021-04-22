@@ -2,11 +2,12 @@
 #include <windows.h>
 #include "Structs.h"
 #include <directxmath.h>
+
 #ifndef _COMMONS_H
 #define _COMMONS_H
 
 //Defaults
-static const wchar_t* defaultTexturePath = L"Assets/Textures/Crate_COLOR.dds";
+static const wchar_t* defaultTexturePath = L"Assets/Textures/DefaultTex.dds";
 //===================Primitive Shape VB/IB Data=================
 static UINT CubeIndexCount = 36;
 static UINT CubeVertexCount =8;
@@ -40,14 +41,14 @@ static WORD CubeIndices[] =
 
 static Vertex3D CubeVertices3D[] =
 {
-	{Vector3D(-0.5f, 0.5f, 0.5f), DirectX::XMFLOAT2(0.0f,0.0f)},
-	{Vector3D(0.5f, 0.5f, 0.5f),DirectX::XMFLOAT2(1.0f,0.0f)},
-	{Vector3D(-0.5f, -0.5f, 0.5f), DirectX::XMFLOAT2(0.0f,1.0f)},
-	{Vector3D(0.5f,-0.5f, 0.5f), DirectX::XMFLOAT2(1.0f,1.0f)},
-	{Vector3D(0.5f,0.5f, -0.5f), DirectX::XMFLOAT2(1.0f,0.0f)},
-	{Vector3D(0.5f,-0.5f, -0.5f),DirectX::XMFLOAT2(1.0f,1.0f)},
-	{Vector3D(-0.5f,-0.5f, -0.5f),DirectX::XMFLOAT2(0.0f,1.0f)},
-	{Vector3D(-0.5f,0.5f, -0.5f),DirectX::XMFLOAT2(0.0f,0.0f)}
+	{Vector3D(-0.5f, 0.5f, 0.5f), DirectX::XMFLOAT2(0.0f,0.0f)},//0
+	{Vector3D(0.5f, 0.5f, 0.5f),DirectX::XMFLOAT2(1.0f,0.0f)},//1
+	{Vector3D(-0.5f, -0.5f, 0.5f), DirectX::XMFLOAT2(0.0f,1.0f)},//2
+	{Vector3D(0.5f,-0.5f, 0.5f), DirectX::XMFLOAT2(1.0f,1.0f)},//3
+	{Vector3D(0.5f,0.5f, -0.5f), DirectX::XMFLOAT2(1.0f,0.0f)},//4
+	{Vector3D(0.5f,-0.5f, -0.5f),DirectX::XMFLOAT2(1.0f,1.0f)},//5
+	{Vector3D(-0.5f,-0.5f, -0.5f),DirectX::XMFLOAT2(0.0f,1.0f)},//6
+	{Vector3D(-0.5f,0.5f, -0.5f),DirectX::XMFLOAT2(0.0f,0.0f)}//7
 };
 static Vertex3D PyramidVertices3D[] =
 {
@@ -70,7 +71,7 @@ static WORD PyramindIndices[] =
 };
 
 static Vertex3D PlaneVertices3D[] = 
-//first row
+
 {{ Vector3D(-0.4f, 0.0f, 0.4f), XMFLOAT2(0.0f, 0.0f )},
 { Vector3D(-0.2f, 0.0f, 0.4f),XMFLOAT2(1.0f, 0.0f )},
 { Vector3D(0.0f, 0.0f, 0.4f), XMFLOAT2(0.0f, 0.0f )},
@@ -164,4 +165,28 @@ static WORD PlaneIndicies[] =
 
 };
 //===================End Primitive Shape VB/IB Data=================
+
+
+
+//=====================DEFAULT LIGHT DATA============================
+static BaseLightData DefaultBaseLightData =
+BaseLightData(DirectX::XMFLOAT4(0.75f, 0.75f, 0.75f, 1.0f),//ambient
+	
+	DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), //diffuse
+
+	DirectX::XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f), //specular color
+
+	10.0f); //specular mat
+
+static Material DefaultMaterial{
+	DirectX::XMFLOAT4(1.0f, 0.5f, 0.5f, 1.0f), //diffuseMat
+	DirectX::XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f), //ambientMat
+	DirectX::XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f), //specular mat
+};
+
+static Material AstroidMaterial{
+	DirectX::XMFLOAT4(1.0f, 0.75f, 0.75f, 1.0f), //diffuseMat
+	DirectX::XMFLOAT4(0.75f, 0.75f, 0.75f, 1.0f), //ambientMat
+	DirectX::XMFLOAT4(2.0f, 2.0f, 2.0f, 1.0f), //specular mat
+};
 #endif
